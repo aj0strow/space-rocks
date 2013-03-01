@@ -5,9 +5,15 @@ var app = express();
 // Log requests in dev mode
 app.use(express.logger('dev'));
 
+// Serve static assets out of public
+app.use(express.static(__dirname + '/assets'));
+
+// Choose jade templating
+app.set('view engine', 'jade');
+
+
 app.get('/', function(request, response) {
-  response.write("hello world");
-  response.end();
+  response.render('layout');
 });
 
 var port = process.env.PORT || 5000;
