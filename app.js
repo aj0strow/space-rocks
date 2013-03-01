@@ -5,7 +5,7 @@ var app = express();
 // Log requests in dev mode
 app.use(express.logger('dev'));
 
-// Serve static assets out of public
+// Serve static assets
 app.use(express.static(__dirname + '/assets'));
 
 // Choose jade templating
