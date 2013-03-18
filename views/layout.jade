@@ -2,14 +2,13 @@
 html
   head
     title Space Rocks
-    script(type="text/javascript", src="lib/jquery-1.9.1.min.js")
-    script(type="text/javascript", src="lib/raphael-2.1.0.min.js")
-    script(type="text/javascript", src="js/game.js")
+    script(type='text/javascript', src='lib/raphael-2.1.0.min.js')
+    script(type='text/javascript', src='lib/jquery-1.9.1.min.js')
+    script(type='text/javascript', src='js/game.js')
+    style(type='text/css')
+      #canvas_container {
+      width: 500px;
+      border: 1px solid #aaa;
+      }
   body
-    h1 Space Rocks
-    p Much to come, stay posted.
-    
-    script
-      $(function() {
-        console.log("DOM is ready!");
-      });
+    #canvas_container
