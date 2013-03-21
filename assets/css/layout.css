@@ -1,0 +1,58 @@
+html, body {
+  height: 100%;
+}
+
+#background {
+  background: #eee;
+  min-height: 100%;
+}
+
+#container {
+  width: 980px;
+  display: block;
+  margin: auto;
+  padding-top: 50px;
+}
+
+#canvas {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  display: block;
+  margin: auto;
+  background: #fff;
+  border: 1px solid #aaa;
+}
+
+#menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(200, 200, 200, 0.8);
+}
+
+#menu ul {
+  padding-top: 25%;
+  width: 50%;
+  height: 50%;
+  display: block;
+  margin: auto;
+}
+
+#menu li {
+  margin-bottom: 20px;
+  background: #eee;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+#menu li:hover {
+  background: #fff;
+}
+
+.hidden {
+  display: none;
+}
