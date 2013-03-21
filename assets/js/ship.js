@@ -8,7 +8,6 @@
   var wrap = wrapAround(Game.windowSize);
   
   var Ship = function(paper) {
-    
     this.obj = paper.path("M 15.834,29.084 15.834,16.166 2.917,16.166 29.083,2.917z");
     this.obj.attr({
       'stroke': '#3b4449',
@@ -18,41 +17,61 @@
     });
     
     this.speed = 0;
-    this.position = { x: 0, y: 0 };
+    this.position = { x: Game.windowSize / 2, y: Game.windowSize / 2 };
     
     // the angle the ship points
     this.angle = -45;
-      
+    this.anglechange = 0;
     // the angle the ship moves
-    this.direction = -45;
-  }
-  
-  Ship.prototype = {
-    ANGLE_DELTA: 5,
-    ACCELERATION: 1,
-    MAX_SPEED: 20,
+    // this.direction = -45;
+
+    this.ANGLE_DELTA_INCREMENT = 2.5;
+    this.ACCELERATION = 2;
+    this.MAX_SPEED = 16;
+    this.MOVE_DISTANCE = .5;
     
-    updateAngle: function(angle) {
-      this.obj.rotate(angle);
-      this.angle = (this.angle + angle) % 360;
-    },
+    this.updateAngle = function() {
+      this.obj.rotate(this.anglechange);
+      this.angle = (this.angle + this.anglechange) % 360;
+      //console.log("angle is: " + (this.angle + 45));
+      this.anglechange=0;
+    };
     
-    updatePosition: function(position) {
-      
+    this.updatePosition = function() {
+      /*
       var bbox = this.obj.getBBox();
-      this.position.x += (bbox.x + bbox.width / 2) % Game.windowSize;
-      this.position.y += (bbox.y + bbox.height / 2) % Game.windowSize;
+      this.position.x = (bbox.x + bbox.width / 2) % Game.windowSize;
+      this.position.y = (bbox.y + bbox.height / 2) % Game.windowSize;
+
+      console.log("ship center: "+ bbox.x + bbox.width / 2 +" , "+bbox.y + bbox.height / 2);  */
+
+      this.position.x += (Math.cos((this.angle - 45) * Math.PI / 180) * this.speed * this.MOVE_DISTANCE);
+      this.position.y += (Math.sin((this.angle - 45) * Math.PI / 180) * this.speed * this.MOVE_DISTANCE);
+
+      if(this.position.x < -15)
+        this.position.x += 500;
+      else if(this.position.x > 500)
+        this.position.x -= 500;
+
+      if(this.position.y < -15)
+        this.position.y += 515;
+      else if(this.position.y > 515)
+        this.position.y -= 515;
+            
+      console.log('Ship position: (' + this.position.x + ', ' + this.position.y + ')');
+
+      this.obj.transform("t" + (this.position.x) + "," + (this.position.y) + "r" + this.angle);
       
       // Wrap around if it goes off left or right
-      this.position.x = wrap(this.position.x);
-      this.position.y = wrap(this.position.y);
-      
-      console.log('Ship position: (' + this.position.x + ', ' + this.position.y + ')');
-    },
+      //this.position.x = wrap(this.position.x);
+      //this.position.y = wrap(this.position.y);
+    };
     
-    update: function() {
-      // update angle and position
-    }
+    this.update = function() {
+      console.log("updataing ship");
+      this.updateAngle();
+      this.updatePosition();
+    };
 
   }
   

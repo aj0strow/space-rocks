@@ -1,5 +1,5 @@
 (function() {
-  
+
   var Game = (function() {
     
     var WINDOW_SIZE = 500;
@@ -7,7 +7,7 @@
 
     var game = {
       // Properties
-          
+
       // frames per second
       fps: 25,
     
@@ -19,9 +19,9 @@
       
       init: function(canvasContainer) {
         var Ship = window.SpaceRocks.Ship;
-      
         this.paper = new Raphael(canvasContainer, this.windowSize, this.windowSize);
         this.ship = new Ship(this.paper);
+        console.log(this);
       },
       
       start: function() {
@@ -32,6 +32,19 @@
       // This is the game loop
       update: function() {
         console.log('Update called!'); 
+        //this.ship.updateAngle(this.ship.anglechange);
+
+          this.ship.update();
+          /*
+           *  update everything else
+           */
+
+           setTimeout( function() { 
+            console.log(this); 
+              if(this.SpaceRocks.Game.isRunning) { this.SpaceRocks.Game.update();} 
+            } 
+            , 1000 / this.fps);
+         
       },
       
       pause: function() {
@@ -42,6 +55,7 @@
       resume: function() {
         $('#menu').hide();
         this.isRunning = true;
+        this.update();
       },
       
       stop: function() {
@@ -54,28 +68,48 @@
         this.start();
       },
       
-    
       // Key Listening Handlers
     
       up: function() {
-        // Jit, couldn't figure out what you were doing in here!
+        // increases speed if running
+        if(this.isRunning){
+          //makes the ship start to move
+          if(this.ship.speed == 0)
+            this.ship.speed = 1;
+          //if the ship is moving under it's maximum speed, it is accelerated, otherwise nothing is done
+          else if(this.ship.speed < this.ship.MAX_SPEED){
+            this.ship.speed *= this.ship.ACCELERATION
+          }
+          console.log(this.ship.speed);
+        }
       },
     
       down: function() {
-        // Jit, not sure what was happening in here!
+        if(this.isRunning){
+          //decelerates if the speed is above 1
+          if(this.ship.speed > 1){
+            this.ship.speed /= this.ship.ACCELERATION
+          }
+          //if it is moving at minimum speed, it stops the ship
+          else this.ship.speed=0;
+          console.log(this.ship.speed);
+        }
+
       },
     
       left: function() {
         console.log('left');
-        this.ship.angle -= this.ship.ANGLE_DELTA;
+        
         if (this.isRunning) {
-          
+          this.ship.anglechange -= this.ship.ANGLE_DELTA_INCREMENT;
+          //console.log(this.ship.anglechange);
         }
       },
     
       right: function() {
+        console.log('right');
         if (this.isRunning) {
-          this.ship.angle += this.ship.ANGLE_DELTA;
+          this.ship.anglechange += this.ship.ANGLE_DELTA_INCREMENT;
         }
       },
     
@@ -91,9 +125,13 @@
     return game;
   })();
 
+/*
+var Interval = setInterval(this.gameLoop(), 1000/this.game.fps)
+function gameLoop(){
+  this.game.update();
+} 
+*/
+  console.log(this);
   window.SpaceRocks.Game = Game;
   
 })();
-
-
-
