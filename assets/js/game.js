@@ -22,6 +22,8 @@
         this.paper = new Raphael(canvasContainer, this.windowSize, this.windowSize);
         this.ship = new Ship(this.paper);
         console.log(this);
+        var SoundSystem = window.SpaceRocks.SoundSystem;
+        this.sounds = new SoundSystem(true);
       },
       
       start: function() {
@@ -80,10 +82,17 @@
           else if(this.ship.speed < this.ship.MAX_SPEED){
             this.ship.speed *= this.ship.ACCELERATION
           }
+          if(this.sounds.engine.paused)
+            this.sounds.engine.play();
           console.log(this.ship.speed);
         }
       },
     
+      upUp: function(){
+        if(!this.sounds.engine.paused)
+          this.sounds.engine.pause();
+      },
+
       down: function() {
         if(this.isRunning){
           //decelerates if the speed is above 1
