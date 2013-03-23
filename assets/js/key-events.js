@@ -30,5 +30,12 @@
     }
     return false;
   });
+
+  $(document).keyup(function(evnt) {
+    if(Game.isRunning && evnt.keyCode == 38){
+      Game.upUp();
+    }
+    return false;
+  })
   
 })();
