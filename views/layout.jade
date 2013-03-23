@@ -2,13 +2,19 @@
 html
   head
     title Space Rocks
-    script(type='text/javascript', src='lib/raphael-2.1.0.min.js')
-    script(type='text/javascript', src='lib/jquery-1.9.1.min.js')
-    script(type='text/javascript', src='js/game.js')
-    style(type='text/css')
-      #canvas_container {
-      width: 500px;
-      border: 1px solid #aaa;
-      }
+    script(type='text/javascript', src='/lib/underscore-1.4.4.min.js')
+    script(type='text/javascript', src='/lib/raphael-2.1.0.min.js')
+    script(type='text/javascript', src='/lib/jquery-1.9.1.min.js')
+    script(type='text/javascript', src='/js/utilities.js')
+    script(type='text/javascript', src='/js/game.js')
+    script(type='text/javascript', src='/js/ship.js')
+    script(type='text/javascript', src='/js/menu.js')
+    script(type='text/javascript', src='/js/main.js')
+    script(type='text/javascript', src='/js/key-events.js')
+    link(rel='stylesheet', href='/css/reset.css')
+    link(rel='stylesheet', href='/css/layout.css')
   body
-    #canvas_container
+    #background
+      #container
+        #canvas
+          include menu
