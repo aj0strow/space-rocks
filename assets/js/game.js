@@ -10,7 +10,9 @@
 
       // frames per second
       fps: 25,
-    
+
+      level: 0,
+
       // flag used to know when to stop the game loop
       isRunning: false,
       windowSize: WINDOW_SIZE,
@@ -21,7 +23,6 @@
         var Ship = window.SpaceRocks.Ship;
         this.paper = new Raphael(canvasContainer, this.windowSize, this.windowSize);
         this.ship = new Ship(this.paper);
-        console.log(this);
       },
       
       start: function() {
@@ -31,17 +32,21 @@
       
       // This is the game loop
       update: function() {
-        console.log('Update called!'); 
-        //this.ship.updateAngle(this.ship.anglechange);
-
           this.ship.update();
+          for( var b = 0; b < this.bullets.length; b++ ){
+            if(this.bullets[b].updatePosition()){
+              this.bullets[b].obj.remove();
+              this.bullets.remove(b);
+            }  
+          }          
           /*
            *  update everything else
            */
 
            setTimeout( function() { 
-            console.log(this); 
-              if(this.SpaceRocks.Game.isRunning) { this.SpaceRocks.Game.update();} 
+              if(this.SpaceRocks.Game.isRunning) { 
+                this.SpaceRocks.Game.update();
+              } 
             } 
             , 1000 / this.fps);
          
@@ -112,7 +117,13 @@
           this.ship.anglechange += this.ship.ANGLE_DELTA_INCREMENT;
         }
       },
-    
+      
+      space: function(){
+        var Bullet = window.SpaceRocks.Bullet;
+            var b = new Bullet(this.paper, this.ship , toDegrees(Math.sin(this.level-1))); 
+            this.bullets.push( b );
+      },
+
       shift: function() {
         this.update();
       },
