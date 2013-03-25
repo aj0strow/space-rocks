@@ -17,7 +17,7 @@
     });
     
     this.speed = 0;
-    this.position = { x: Game.windowSize / 2, y: Game.windowSize / 2 };
+    this.position = { x: Game.windowSize / 2, y: Game.windowSize / 2, };
     
     // the angle the ship points
     this.angle = -45;
@@ -48,17 +48,10 @@
       this.position.x += (Math.cos((this.angle - 45) * Math.PI / 180) * this.speed * this.MOVE_DISTANCE);
       this.position.y += (Math.sin((this.angle - 45) * Math.PI / 180) * this.speed * this.MOVE_DISTANCE);
 
-      if(this.position.x < -15)
-        this.position.x += 500;
-      else if(this.position.x > 500)
-        this.position.x -= 500;
-
-      if(this.position.y < -15)
-        this.position.y += 515;
-      else if(this.position.y > 515)
-        this.position.y -= 515;
+      this.position.x = wrap(this.position.x);
+      this.position.y = wrap(this.position.y);
             
-      console.log('Ship position: (' + this.position.x + ', ' + this.position.y + ')');
+      //console.log('Ship position: (' + this.position.x + ', ' + this.position.y + ')');
 
       this.obj.transform("t" + (this.position.x) + "," + (this.position.y) + "r" + this.angle);
       

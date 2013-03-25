@@ -23,15 +23,22 @@
   */
   window.wrapAround = function(max) {
     var f = function(coord) {
-      if (coord < 0) 
+      if (coord < -10) 
         coord = max;
-      else if (coord > max) 
+      else if (coord > ( max + 10 ) ) 
         coord = 0;
       return coord;
     }
     return f;
   }
-  
+
+// Array Remove - By John Resig (MIT Licensed)
+  Array.prototype.remove = function(from, to) {
+    var rest = this.slice((to || from) + 1 || this.length);
+    this.length = from < 0 ? this.length + from : from;
+    return this.push.apply(this, rest);
+    }
+
   window.SpaceRocks = {};
   
 })();
