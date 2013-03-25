@@ -6,8 +6,12 @@
     //bonus angle is for when we have 
   var Bullet = function(paper , ship, bonusAngle){  
     console.log("making bullet...");
-    this.angle = ship.angle + 45;
-
+    if (ship.shipType == "smartAlien")
+      this.angle = Math.atan((ship.position.x - window.SpaceRocks.Ship.position.x) / (ship.position.y - window.SpaceRocks.Ship.position.y));
+    else if(ship.shipType == "alien")
+      this.angle = Math.floor( Math.random() * 360);
+    //if it's the players ship...
+    else this.angle = ship.angle + 45;
     //gets boundingbox
     var bbox = ship.obj.getBBox();
 
