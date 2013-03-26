@@ -61,7 +61,7 @@
     };
     
     this.update = function() {
-      console.log("updataing ship");
+      //console.log("updataing ship");
       this.updateAngle();
       this.updatePosition();
     };

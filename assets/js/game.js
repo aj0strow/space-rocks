@@ -92,7 +92,7 @@
           }
           if(this.sounds.engine.paused)
             this.sounds.engine.play();
-          console.log(this.ship.speed);
+          //console.log(this.ship.speed);
         }
       },
     

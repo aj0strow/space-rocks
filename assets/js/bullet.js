@@ -5,7 +5,7 @@
   	//this.BULLET_LENGTH = 10;
     //bonus angle is for when we have 
   var Bullet = function(paper , ship, bonusAngle){  
-    console.log("making bullet...");
+    //console.log("making bullet...");
     if (ship.shipType == "smartAlien")
       this.angle = Math.atan((ship.position.x - window.SpaceRocks.Ship.position.x) / (ship.position.y - window.SpaceRocks.Ship.position.y));
     else if(ship.shipType == "alien")
@@ -33,10 +33,10 @@
     this.distanceTraveled = 0;
 
   	this.updatePosition = function() {
-      console.log(this.position); 
+      //console.log(this.position); 
       if(this.distanceTraveled < this.MAX_DISTANCE){
         
-        console.log("distance change: x: " + (Math.sin((this.angle * Math.PI / 180)) * this.MOVE_DISTANCE) + " y: " + (Math.cos((this.angle * Math.PI / 180) + Math.PI) * this.MOVE_DISTANCE));
+        //console.log("distance change: x: " + (Math.sin((this.angle * Math.PI / 180)) * this.MOVE_DISTANCE) + " y: " + (Math.cos((this.angle * Math.PI / 180) + Math.PI) * this.MOVE_DISTANCE));
           this.position.x += (Math.sin((this.angle * Math.PI / 180)) * this.MOVE_DISTANCE);
           this.position.y += (Math.cos((this.angle * Math.PI / 180) + Math.PI) * this.MOVE_DISTANCE);
           this.position.x = wrap(this.position.x);
