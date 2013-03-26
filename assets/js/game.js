@@ -5,7 +5,6 @@
     var WINDOW_SIZE = 500;
     var INITIAL_ASTEROID_COUNT = 5;   
     var totalAsteroids = 5;  
-    var ASTEROID_RADIUS = 20;
 
     var game = {
       // Properties
@@ -20,7 +19,7 @@
       windowSize: WINDOW_SIZE,
       asteroids: [],
       bullets: [],
-      asteroidRadius: ASTEROID_RADIUS,
+      asteroidRadius: 20,
       
       init: function(canvasContainer) {
         var Ship = window.SpaceRocks.Ship;
@@ -43,7 +42,7 @@
       // This is the game loop
       update: function() {
           this.ship.update();
-          for(var i = 0; i < totalAsteroids; i++){
+          for(var i = 0; i < this.asteroids.length; i++){
             this.asteroids[i].updatePosition();
           }
           for( var b = 0; b < this.bullets.length; b++ ){
@@ -68,10 +67,27 @@
       },
       
       bulletCollision: function(){
-        for(var b = 0; b < this.bullets.length; b++){
-          for(var a = 0; a < this.asteroids.length; a++){
-            if(distance(this.bullets[b].position, this.asteroids[a].position)<this.asteroidRadius){
-              console.log("Bullet collision detected.")
+        var bulletLength = this.bullets.length;
+        var asteroidsLength = this.asteroids.length;
+        for(var b = 0; b < bulletLength; b++){
+          for(var a = 0; a < asteroidsLength; a++){
+            console.log("bullets" + this.bullets);
+            console.log("asteroids" + this.asteroids);
+            try{
+              if(distance(this.bullets[b].position, this.asteroids[a].position)<this.asteroidRadius)
+              {
+                this.bullets[b].obj.remove();
+                this.bullets.remove(b);
+                this.asteroids[a].obj.remove();
+                this.asteroids.remove(a);
+
+                bulletLength--;
+                asteroidsLength--;
+              }
+            }
+            catch (exception){
+              if (exception == TypeError)
+                return true;
             }
           }
         }
