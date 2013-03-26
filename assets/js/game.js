@@ -3,7 +3,8 @@
   var Game = (function() {
     
     var WINDOW_SIZE = 500;
-    var INITIAL_ASTEROID_COUNT = 10;    
+    var INITIAL_ASTEROID_COUNT = 10;   
+    var totalAsteroids = 10;  
 
     var game = {
       // Properties
@@ -41,7 +42,8 @@
               this.bullets[b].obj.remove();
               this.bullets.remove(b);
             }  
-          }          
+          } 
+                   
           /*
            *  update everything else
            */
