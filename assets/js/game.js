@@ -28,7 +28,9 @@
         var SoundSystem = window.SpaceRocks.SoundSystem;
         this.sounds = new SoundSystem(true);
         var Asteroids = window.SpaceRocks.Asteroids;
-        this.asteroids = new Asteroids(this.paper);
+        for(var i = 0; i < totalAsteroids; i++){
+          this.asteroids[i] = new Asteroids(this.paper);
+        }
       },
       
       start: function() {
@@ -39,7 +41,9 @@
       // This is the game loop
       update: function() {
           this.ship.update();
-          this.asteroids.updatePosition();
+          for(var i = 0; i < totalAsteroids; i++){
+            this.asteroids[i].updatePosition();
+          }
           for( var b = 0; b < this.bullets.length; b++ ){
             if(this.bullets[b].updatePosition()){
               this.bullets[b].obj.remove();

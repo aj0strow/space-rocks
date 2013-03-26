@@ -38,7 +38,8 @@
 
     console.log("Creating an asteroid");
     this.position = {x: Math.random()*Game.windowSize, y: Math.random()*Game.windowSize};
-    this.angle = Math.random() * 2 * Math.PI;
+    this.angle = Math.random() * 360;
+    console.log(this.angle);
     this.MOVE_DISTANCE = 2;
     this.obj = paper.circle(this.position.x, this.position.y, 5);
     //this.obj = paper.path('M' + (this.position.x) + ' ' + (this.position .y) + 'l' + 0 + ' ' + 10);
