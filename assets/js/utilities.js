@@ -32,6 +32,19 @@
     return f;
   }
 
+  window.distance = function(point1, point2){
+    var xs = 0;
+    var ys = 0;
+ 
+    xs = point2.x - point1.x;
+    xs = xs * xs;
+ 
+    ys = point2.y - point1.y;
+    ys = ys * ys;
+ 
+  return Math.sqrt( xs + ys );
+  }
+
 // Array Remove - By John Resig (MIT Licensed)
   Array.prototype.remove = function(from, to) {
     var rest = this.slice((to || from) + 1 || this.length);

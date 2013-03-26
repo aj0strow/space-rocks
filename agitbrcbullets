@@ -1,0 +1,218 @@
+[33mcommit 268b5543c47a84918a2243dfd9a5bee8458b0a3d[m
+Author: kanetkarster@gmail.com <kanetkarster>
+Date:   Sun Mar 24 19:35:41 2013 -0400
+
+    bullets added
+
+[1mdiff --git a/assets/js/bullet.js b/assets/js/bullet.js[m
+[1mnew file mode 100644[m
+[1mindex 0000000..9d5019b[m
+[1m--- /dev/null[m
+[1m+++ b/assets/js/bullet.js[m
+[36m@@ -0,0 +1,51 @@[m
+[32m+[m[32m(function() {[m
+[32m+[m[32m  var Game = window.SpaceRocks.Game;[m
+[32m+[m[32m  var wrap = wrapAround(Game.windowSize);[m
+[32m+[m
+[32m+[m[41m  [m	[32m//this.BULLET_LENGTH = 10;[m
+[32m+[m[32m    //bonus angle is for when we have[m[41m [m
+[32m+[m[32m  var Bullet = function(paper , ship, bonusAngle){[m[41m  [m
+[32m+[m[32m    console.log("making bullet...");[m
+[32m+[m[32m    this.angle = ship.angle + 45;[m
+[32m+[m
+[32m+[m[32m    //gets boundingbox[m
+[32m+[m[32m    var bbox = ship.obj.getBBox();[m
+[32m+[m
+[32m+[m[32m    //updating position of bullet[m
+[32m+[m[32m    this.position = {x: (bbox.x + bbox.width/2) , y: ((bbox.y + bbox.height/2))};[m
+[32m+[m
+[32m+[m[32m    //constant correction factor. When the bukllet is made, poisition os affected by a margin of error[m
+[32m+[m[32m    this.shipPosition = {x: (bbox.x + bbox.width/2) , y: ((bbox.y + bbox.height/2))  };[m
+[32m+[m[41m  [m	[32mthis.obj = paper.path('M' + (this.position.x) + ' ' + (this.position .y) + 'l' + 0 + ' ' + 10);[m
+[32m+[m[41m      [m
+[32m+[m[41m  [m	[32mthis.obj.rotate( this.angle );[m
+[32m+[m
+[32m+[m[32m    //contants, in pixels[m
+[32m+[m[41m  [m	[32mthis.MOVE_DISTANCE = 12;[m
+[32m+[m[32m    this.MAX_DISTANCE  = 480;[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    this.distanceTraveled = 0;[m
+[32m+[m
+[32m+[m[41m  [m	[32mthis.updatePosition = function() {[m
+[32m+[m[32m      console.log(this.position);[m[41m [m
+[32m+[m[32m      if(this.distanceTraveled < this.MAX_DISTANCE){[m
+[32m+[m[41m        [m
+[32m+[m[32m        console.log("distance change: x: " + (Math.sin((this.angle * Math.PI / 180)) * this.MOVE_DISTANCE) + " y: " + (Math.cos((this.angle * Math.PI / 180) + Math.PI) * this.MOVE_DISTANCE));[m
+[32m+[m[32m          this.position.x += (Math.sin((this.angle * Math.PI / 180)) * this.MOVE_DISTANCE);[m
+[32m+[m[32m          this.position.y += (Math.cos((this.angle * Math.PI / 180) + Math.PI) * this.MOVE_DISTANCE);[m
+[32m+[m[32m          this.position.x = wrap(this.position.x);[m
+[32m+[m[32m          this.position.y = wrap(this.position.y);[m
+[32m+[m[32m        this.obj.transform("t" + (this.position.x - this.shipPosition.x) + "," + (this.position.y - this.shipPosition.y) + 'r' + this.angle);[m
+[32m+[m[32m          this.distanceTraveled += this.MOVE_DISTANCE;[m
+[32m+[m[41m          [m
+[32m+[m[32m        }[m
+[32m+[m[32m      else return true;[m
+[32m+[m[32m      };[m
+[32m+[m
+[32m+[m[41m  [m	[32m}[m
+[32m+[m[41m	[m
+[32m+[m[32m    window.SpaceRocks.Bullet = Bullet;[m
+[32m+[m
+[32m+[m[32m})();[m
+\ No newline at end of file[m
+[1mdiff --git a/assets/js/game.js b/assets/js/game.js[m
+[1mindex 4de3cc4..4d52215 100644[m
+[1m--- a/assets/js/game.js[m
+[1m+++ b/assets/js/game.js[m
+[36m@@ -10,7 +10,9 @@[m
+ [m
+       // frames per second[m
+       fps: 25,[m
+[31m-    [m
+[32m+[m
+[32m+[m[32m      level: 0,[m
+[32m+[m
+       // flag used to know when to stop the game loop[m
+       isRunning: false,[m
+       windowSize: WINDOW_SIZE,[m
+[36m@@ -21,7 +23,6 @@[m
+         var Ship = window.SpaceRocks.Ship;[m
+         this.paper = new Raphael(canvasContainer, this.windowSize, this.windowSize);[m
+         this.ship = new Ship(this.paper);[m
+[31m-        console.log(this);[m
+       },[m
+       [m
+       start: function() {[m
+[36m@@ -31,17 +32,21 @@[m
+       [m
+       // This is the game loop[m
+       update: function() {[m
+[31m-        console.log('Update called!'); [m
+[31m-        //this.ship.updateAngle(this.ship.anglechange);[m
+[31m-[m
+           this.ship.update();[m
+[32m+[m[32m          for( var b = 0; b < this.bullets.length; b++ ){[m
+[32m+[m[32m            if(this.bullets[b].updatePosition()){[m
+[32m+[m[32m              this.bullets[b].obj.remove();[m
+[32m+[m[32m              this.bullets.remove(b);[m
+[32m+[m[32m            }[m[41m  [m
+[32m+[m[32m          }[m[41m          [m
+           /*[m
+            *  update everything else[m
+            */[m
+ [m
+            setTimeout( function() { [m
+[31m-            console.log(this); [m
+[31m-              if(this.SpaceRocks.Game.isRunning) { this.SpaceRocks.Game.update();} [m
+[32m+[m[32m              if(this.SpaceRocks.Game.isRunning) {[m[41m [m
+[32m+[m[32m                this.SpaceRocks.Game.update();[m
+[32m+[m[32m              }[m[41m [m
+             } [m
+             , 1000 / this.fps);[m
+          [m
+[36m@@ -112,7 +117,13 @@[m
+           this.ship.anglechange += this.ship.ANGLE_DELTA_INCREMENT;[m
+         }[m
+       },[m
+[31m-    [m
+[32m+[m[41m      [m
+[32m+[m[32m      space: function(){[m
+[32m+[m[32m        var Bullet = window.SpaceRocks.Bullet;[m
+[32m+[m[32m            var b = new Bullet(this.paper, this.ship , toDegrees(Math.sin(this.level-1)));[m[41m [m
+[32m+[m[32m            this.bullets.push( b );[m
+[32m+[m[32m      },[m
+[32m+[m
+       shift: function() {[m
+         this.update();[m
+       },[m
+[1mdiff --git a/assets/js/key-events.js b/assets/js/key-events.js[m
+[1mindex bb2815c..83d4b44 100644[m
+[1m--- a/assets/js/key-events.js[m
+[1m+++ b/assets/js/key-events.js[m
+[36m@@ -5,6 +5,7 @@[m
+   // jQuery Key Codes[m
+   [m
+   var METHODS = {[m
+[32m+[m[32m    32: 'space',[m
+     37: 'left',[m
+     38: 'up',[m
+     39: 'right',[m
+[1mdiff --git a/assets/js/ship.js b/assets/js/ship.js[m
+[1mindex d486e85..8413a47 100644[m
+[1m--- a/assets/js/ship.js[m
+[1m+++ b/assets/js/ship.js[m
+[36m@@ -17,7 +17,7 @@[m
+     });[m
+     [m
+     this.speed = 0;[m
+[31m-    this.position = { x: Game.windowSize / 2, y: Game.windowSize / 2 };[m
+[32m+[m[32m    this.position = { x: Game.windowSize / 2, y: Game.windowSize / 2, };[m
+     [m
+     // the angle the ship points[m
+     this.angle = -45;[m
+[36m@@ -48,17 +48,10 @@[m
+       this.position.x += (Math.cos((this.angle - 45) * Math.PI / 180) * this.speed * this.MOVE_DISTANCE);[m
+       this.position.y += (Math.sin((this.angle - 45) * Math.PI / 180) * this.speed * this.MOVE_DISTANCE);[m
+ [m
+[31m-      if(this.position.x < -15)[m
+[31m-        this.position.x += 500;[m
+[31m-      else if(this.position.x > 500)[m
+[31m-        this.position.x -= 500;[m
+[31m-[m
+[31m-      if(this.position.y < -15)[m
+[31m-        this.position.y += 515;[m
+[31m-      else if(this.position.y > 515)[m
+[31m-        this.position.y -= 515;[m
+[32m+[m[32m      this.position.x = wrap(this.position.x);[m
+[32m+[m[32m      this.position.y = wrap(this.position.y);[m
+             [m
+[31m-      console.log('Ship position: (' + this.position.x + ', ' + this.position.y + ')');[m
+[32m+[m[32m      //console.log('Ship position: (' + this.position.x + ', ' + this.position.y + ')');[m
+ [m
+       this.obj.transform("t" + (this.position.x) + "," + (this.position.y) + "r" + this.angle);[m
+       [m
+[1mdiff --git a/assets/js/utilities.js b/assets/js/utilities.js[m
+[1mindex 0cee3e8..c4146d2 100644[m
+[1m--- a/assets/js/utilities.js[m
+[1m+++ b/assets/js/utilities.js[m
+[36m@@ -23,15 +23,22 @@[m
+   */[m
+   window.wrapAround = function(max) {[m
+     var f = function(coord) {[m
+[31m-      if (coord < 0) [m
+[32m+[m[32m      if (coord < -10)[m[41m [m
+         coord = max;[m
+[31m-      else if (coord > max) [m
+[32m+[m[32m      else if (coord > ( max + 10 ) )[m[41m [m
+         coord = 0;[m
+       return coord;[m
+     }[m
+     return f;[m
+   }[m
+[31m-  [m
+[32m+[m
+[32m+[m[32m// Array Remove - By John Resig (MIT Licensed)[m
+[32m+[m[32m  Array.prototype.remove = function(from, to) {[m
+[32m+[m[32m    var rest = this.slice((to || from) + 1 || this.length);[m
+[32m+[m[32m    this.length = from < 0 ? this.length + from : from;[m
+[32m+[m[32m    return this.push.apply(this, rest);[m
+[32m+[m[32m    }[m
+[32m+[m
+   window.SpaceRocks = {};[m
+   [m
+ })();[m
+\ No newline at end of file[m
+[1mdiff --git a/views/layout.jade b/views/layout.jade[m
+[1mindex a95786c..bbb7a7f 100644[m
+[1m--- a/views/layout.jade[m
+[1m+++ b/views/layout.jade[m
+[36m@@ -10,6 +10,7 @@[m [mhtml[m
+     script(type='text/javascript', src='/js/ship.js')[m
+     script(type='text/javascript', src='/js/menu.js')[m
+     script(type='text/javascript', src='/js/main.js')[m
+[32m+[m[32m    script(type='text/javascript', src='/js/bullet.js')[m
+     script(type='text/javascript', src='/js/key-events.js')[m
+     link(rel='stylesheet', href='/css/reset.css')[m
+     link(rel='stylesheet', href='/css/layout.css')[m

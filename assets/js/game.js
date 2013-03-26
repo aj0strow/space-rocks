@@ -3,7 +3,8 @@
   var Game = (function() {
     
     var WINDOW_SIZE = 500;
-    var INITIAL_ASTEROID_COUNT = 10;    
+    var INITIAL_ASTEROID_COUNT = 5;   
+    var totalAsteroids = 5;  
 
     var game = {
       // Properties
@@ -18,6 +19,7 @@
       windowSize: WINDOW_SIZE,
       asteroids: [],
       bullets: [],
+      asteroidRadius: 20,
       
       init: function(canvasContainer) {
         var Ship = window.SpaceRocks.Ship;
@@ -26,6 +28,10 @@
         console.log(this);
         var SoundSystem = window.SpaceRocks.SoundSystem;
         this.sounds = new SoundSystem(true);
+        var Asteroids = window.SpaceRocks.Asteroids;
+        for(var i = 0; i < totalAsteroids; i++){
+          this.asteroids[i] = new Asteroids(this.paper);
+        }
       },
       
       start: function() {
@@ -36,12 +42,17 @@
       // This is the game loop
       update: function() {
           this.ship.update();
+          for(var i = 0; i < this.asteroids.length; i++){
+            this.asteroids[i].updatePosition();
+          }
           for( var b = 0; b < this.bullets.length; b++ ){
             if(this.bullets[b].updatePosition()){
               this.bullets[b].obj.remove();
               this.bullets.remove(b);
             }  
-          }          
+          }
+          this.bulletCollision();
+          this.shipCollision();
           /*
            *  update everything else
            */
@@ -55,6 +66,41 @@
          
       },
       
+      bulletCollision: function(){
+        var bulletLength = this.bullets.length;
+        var asteroidsLength = this.asteroids.length;
+        for(var b = 0; b < bulletLength; b++){
+          for(var a = 0; a < asteroidsLength; a++){
+            console.log("bullets" + this.bullets);
+            console.log("asteroids" + this.asteroids);
+            try{
+              if(distance(this.bullets[b].position, this.asteroids[a].position)<this.asteroidRadius)
+              {
+                this.bullets[b].obj.remove();
+                this.bullets.remove(b);
+                this.asteroids[a].obj.remove();
+                this.asteroids.remove(a);
+
+                bulletLength--;
+                asteroidsLength--;
+              }
+            }
+            catch (exception){
+              if (exception == TypeError)
+                return true;
+            }
+          }
+        }
+      },
+
+      shipCollision: function(){
+        for (var a = 0; a <this.asteroids.length; a++){
+          if (distance(this.asteroids[a].position, this.ship.position)<this.asteroidRadius){
+            console.log("Ship collision detected.");
+          }
+        }
+      },
+
       pause: function() {
         $('#menu').show();
         this.isRunning = false;
@@ -90,7 +136,7 @@
           }
           if(this.sounds.engine.paused)
             this.sounds.engine.play();
-          console.log(this.ship.speed);
+          //console.log(this.ship.speed);
         }
       },
     
