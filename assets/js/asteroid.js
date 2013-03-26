@@ -39,9 +39,9 @@
     console.log("Creating an asteroid");
     this.position = {x: Math.random()*Game.windowSize, y: Math.random()*Game.windowSize};
     this.angle = Math.random() * 360;
-    console.log(this.angle);
+    console.log(Game.asteroidRadius);
     this.MOVE_DISTANCE = 2;
-    this.obj = paper.circle(this.position.x, this.position.y, 5);
+    this.obj = paper.circle(this.position.x, this.position.y, Game.asteroidRadius);
     //this.obj = paper.path('M' + (this.position.x) + ' ' + (this.position .y) + 'l' + 0 + ' ' + 10);
 
     this.updatePosition = function() {
@@ -51,7 +51,7 @@
       this.position.y = wrap(this.position.y);
       //this.obj.transform("t" + (this.position.x) + "," + (this.position.y) + 'r' + this.angle);      
       //this.obj.animate(this.position.x, this.position.y);
-      this.obj = paper.circle(this.position.x, this.position.y, 5);
+      this.obj = paper.circle(this.position.x, this.position.y, Game.asteroidRadius);
       //console.log(this.position);
     };
   }

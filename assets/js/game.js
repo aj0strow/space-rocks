@@ -3,8 +3,9 @@
   var Game = (function() {
     
     var WINDOW_SIZE = 500;
-    var INITIAL_ASTEROID_COUNT = 10;   
+    var INITIAL_ASTEROID_COUNT = 5;   
     var totalAsteroids = 10;  
+    var ASTEROID_RADIUS = 20;
 
     var game = {
       // Properties
@@ -19,6 +20,7 @@
       windowSize: WINDOW_SIZE,
       asteroids: [],
       bullets: [],
+      asteroidRadius: ASTEROID_RADIUS,
       
       init: function(canvasContainer) {
         var Ship = window.SpaceRocks.Ship;
@@ -49,8 +51,9 @@
               this.bullets[b].obj.remove();
               this.bullets.remove(b);
             }  
-          } 
-                   
+          }
+          this.bulletCollision();
+          this.shipCollision();
           /*
            *  update everything else
            */
@@ -64,6 +67,24 @@
          
       },
       
+      bulletCollision: function(){
+        for(var b = 0; b < this.bullets.length; b++){
+          for(var a = 0; a < this.asteroids.length; a++){
+            if(distance(this.bullets[b].position, this.asteroids[a].position)<this.asteroidRadius){
+              console.log("Bullet collision detected.")
+            }
+          }
+        }
+      },
+
+      shipCollision: function(){
+        for (var a = 0; a <this.asteroids.length; a++){
+          if (distance(this.asteroids[a].position, this.ship.position)<this.asteroidRadius){
+            console.log("Ship collision detected.");
+          }
+        }
+      },
+
       pause: function() {
         $('#menu').show();
         this.isRunning = false;
