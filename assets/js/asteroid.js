@@ -40,7 +40,7 @@
     this.position = {x: Math.random()*Game.windowSize, y: Math.random()*Game.windowSize};
     this.angle = Math.random() * 360;
     console.log(Game.asteroidRadius);
-    this.MOVE_DISTANCE = 2;
+    this.MOVE_DISTANCE = 0;//2;
     this.obj = paper.circle(this.position.x, this.position.y, Game.asteroidRadius);
     //this.obj = paper.path('M' + (this.position.x) + ' ' + (this.position .y) + 'l' + 0 + ' ' + 10);
 

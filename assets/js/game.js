@@ -4,7 +4,7 @@
     
     var WINDOW_SIZE = 500;
     var INITIAL_ASTEROID_COUNT = 5;   
-    var totalAsteroids = 10;  
+    var totalAsteroids = 5;  
     var ASTEROID_RADIUS = 20;
 
     var game = {
