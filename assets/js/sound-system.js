@@ -14,7 +14,7 @@
 		this.asteroidExplode = document.createElement('audio');
 		this.shipExplode = document.createElement('audio');
 		//Setting sources
-		if (options.voiceModes){
+		if (options.voiceMode){
 			this.engine.setAttribute('src', '/sound/shipAccelerate_voice.mp3');
 			this.gun.setAttribute('src', '/sound/shipGun_voice.mp3');
 			this.asteroidExplode.setAttribute('src', '/sound/asteroidExplosion_voice.mp3');
