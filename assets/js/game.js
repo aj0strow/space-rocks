@@ -76,6 +76,7 @@
             try{
               if(distance(this.bullets[b].position, this.asteroids[a].position)<this.asteroidRadius)
               {
+                this.sounds.asteroidExplode.play();
                 this.bullets[b].obj.remove();
                 this.bullets.remove(b);
                 this.asteroids[a].obj.remove();
@@ -97,6 +98,7 @@
         for (var a = 0; a <this.asteroids.length; a++){
           if (distance(this.asteroids[a].position, this.ship.position)<this.asteroidRadius){
             console.log("Ship collision detected.");
+            this.sounds.shipExplode.play();
           }
         }
       },
@@ -175,6 +177,7 @@
       },
       
       space: function(){
+        this.sounds.gun.play();
         var Bullet = window.SpaceRocks.Bullet;
             var b = new Bullet(this.paper, this.ship , toDegrees(Math.sin(this.level-1))); 
             this.bullets.push( b );

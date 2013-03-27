@@ -26,6 +26,7 @@
 		//Set volumes
 		this.music.volume=0.2;
 		this.engine.volume=0.3;
+		this.asteroidExplode.volume=0.5;
 		//Begin music
 		this.music.play();
 	}
