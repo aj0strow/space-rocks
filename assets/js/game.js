@@ -24,7 +24,7 @@
         this.sounds = new SoundSystem({ voiceMode: true });
       },
       
-      start: function() {        
+      start: function(lives) {        
         var Ship = window.SpaceRocks.Ship;
         var Asteroid = window.SpaceRocks.Asteroid;
         
@@ -38,20 +38,15 @@
       },
       
       bulletCollision: function(){
-        var bulletLength = this.bullets.length;
-        var asteroidsLength = this.asteroids.length;
-        for(var b = 0; b < bulletLength; b++) {
-          for(var a = 0; a < asteroidsLength; a++) {
+        for(var b = 0; b < this.bullets.length; b++) {
+          for(var a = 0; a < this.asteroids.length; a++) {
             try{
-              if( distance(this.bullets[b].position, this.asteroids[a].position) < this.asteroidRadius) {
+              if( distance(this.bullets[b].position, this.asteroids[a].position) < this.asteroids[a].asteroidRadius) {
                 this.sounds.asteroidExplode.play();
                 this.bullets[b].obj.remove();
                 this.bullets.remove(b);
                 this.asteroids[a].obj.remove();
                 this.asteroids.remove(a);
-
-                bulletLength--;
-                asteroidsLength--;
               }
             }
             catch (exception){
