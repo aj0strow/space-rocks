@@ -138,7 +138,6 @@
           }
           if(this.sounds.engine.paused)
             this.sounds.engine.play();
-          //console.log(this.ship.speed);
         }
       },
     
@@ -149,11 +148,11 @@
 
       down: function() {
         if(this.isRunning){
-          //decelerates if the speed is above 1
+          // decelerates if the speed is above 1
           if(this.ship.speed > 1){
             this.ship.speed /= this.ship.ACCELERATION
           }
-          //if it is moving at minimum speed, it stops the ship
+          // if it is moving at minimum speed, it stops the ship
           else this.ship.speed=0;
           console.log(this.ship.speed);
         }
@@ -165,7 +164,6 @@
         
         if (this.isRunning) {
           this.ship.anglechange -= this.ship.ANGLE_DELTA_INCREMENT;
-          //console.log(this.ship.anglechange);
         }
       },
     
@@ -179,8 +177,8 @@
       space: function(){
         this.sounds.gun.play();
         var Bullet = window.SpaceRocks.Bullet;
-            var b = new Bullet(this.paper, this.ship , toDegrees(Math.sin(this.level-1))); 
-            this.bullets.push( b );
+        var b = new Bullet(this.paper, this.ship, toDegrees(Math.sin(this.level - 1))); 
+        this.bullets.push( b );
       },
 
       shift: function() {
@@ -195,13 +193,6 @@
     return game;
   })();
 
-/*
-var Interval = setInterval(this.gameLoop(), 1000/this.game.fps)
-function gameLoop(){
-  this.game.update();
-} 
-*/
-  console.log(this);
   window.SpaceRocks.Game = Game;
   
 })();
