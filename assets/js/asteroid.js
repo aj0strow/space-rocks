@@ -29,7 +29,6 @@
   
   Asteroid.prototype = {
     SPEED: 2,
-    DELTA_ANGLE: 2.5,
     updatePosition: function() {
       var angle = toRadians(this.angle);
       var dx = Math.sin(angle) * this.SPEED;
@@ -38,7 +37,6 @@
       this.position.x = wrap( this.position.x + dx );
       this.position.y = wrap( this.position.y + dy );
       
-      this.obj.rotate(this.DELTA_ANGLE);
       this.obj.transform( ['t', this.position.x, ',', this.position.y, 'r', this.angle, 's', this.asteroidSize, ',', this.asteroidSize].join('') );
     }
   }

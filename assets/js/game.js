@@ -15,8 +15,9 @@
       windowSize: WINDOW_SIZE,
       asteroids: [],
       bullets: [],
+      alienBullets: [],
       asteroidRadius: 20,
-      
+      alienShipExists: false,
       init: function(canvasContainer) {
         var SoundSystem = window.SpaceRocks.SoundSystem;
         
@@ -157,9 +158,9 @@
       
       space: function(){
         this.sounds.gun.play();
-        var Bullet = window.SpaceRocks.Bullet;
-        var b = new Bullet(this.paper, this.ship, toDegrees(Math.sin(this.level - 1))); 
-        this.bullets.push( b );
+          var Bullet = window.SpaceRocks.Bullet;
+          var b = new Bullet(this.paper, this.ship, 0); 
+          this.bullets.push( b );
       },
 
       shift: function() {
@@ -167,7 +168,11 @@
       },
     
       enter: function() {
-         console.log("misc debugging");
+        if (!this.alienShipExists){
+        var AlienShip = window.SpaceRocks.AlienShip;
+        this.alienShip = new AlienShip(this.paper, "alien");
+        this.alienShipExists = true;
+        }
       }
     };
     
@@ -181,8 +186,25 @@
       for( var b=0; b < this.bullets.length; b++ ) {
         if (this.bullets[b].updatePosition()) {
           this.bullets[b].obj.remove();
-          this.bullets.remove(b);
+          this.bullets.remove(b);  
         }  
+      }
+      if(this.alienShipExists){
+        this.alienShip.updatePosition();
+        //makes bullets occasionally
+        if(Math.random() > .9){
+          this.sounds.gun.play();
+          var Bullet = window.SpaceRocks.Bullet;
+          var bul = new Bullet(this.paper, this.alienShip, 0, this.ship); 
+          this.alienBullets.push( bul );
+        }
+        //updates all alien bullets
+      for( var c=0; c < this.alienBullets.length; c++ ) {
+        if (this.alienBullets[c].updatePosition()) {
+          this.alienBullets[c].obj.remove();
+          this.alienBullets.remove(c);  
+        }  
+      }
       }
       this.bulletCollision();
       this.shipCollision();
