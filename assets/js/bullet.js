@@ -1,17 +1,19 @@
 (function() {
   
   var Game = window.SpaceRocks.Game;
-  var Ship = window.SpaceRocks.Ship;
+  var Ship = window.SpaceRocks.Game.ship;
   var wrap = wrapAround(Game.windowSize);
 
   // bonus angle is for when we have -- BEN: when we have what??
-  var Bullet = function(paper, ship, bonusAngle) {  
+  var Bullet = function(paper, ship, bonusAngle, playerShip) {  
     
-    if (ship.type == "smartAlien") {
-      var dx = ship.position.x - Ship.position.x,
-          dy = ship.position.y - Ship.position.y;
-      this.angle = Math.atan(dx / dy);
-    } else if(ship.type == "alien") {
+    if (ship.shipType == "smartAlien") {
+      console.log(Ship);
+      var dx = ship.position.x - playerShip.position.x,
+          dy = ship.position.y - playerShip.position.y;
+      console.log(dx + " , " + dy);
+      this.angle = Math. atan(dx / dy);
+    } else if(ship.shipType == "alien") {
       this.angle = Math.floor(Math.random() * 360);
     } else {
       this.angle = ship.angle + 45;
