@@ -7,8 +7,11 @@
     var FPS = 25;
 
     var game = {
-
+      lives: 2,
       level: 0,
+
+      score: -1,
+      totalScore: 0,
 
       // flag used to know when to stop the game loop
       isRunning: false,
@@ -25,29 +28,45 @@
         this.sounds = new SoundSystem({ voiceMode: true });
       },
       
-      start: function(lives) {        
-        var Ship = window.SpaceRocks.Ship;
-        var Asteroid = window.SpaceRocks.Asteroid;
-        
-        this.ship = new Ship(this.paper);
-        
-        for (var i=0; i < INITIAL_ASTEROID_COUNT; i++) {
-          this.asteroids[i] = new Asteroid(this.paper);
+      start: function() {
+        if(this.lives > 0) {
+          var Ship = window.SpaceRocks.Ship;
+          var Asteroid = window.SpaceRocks.Asteroid;
+          
+          this.ship = new Ship(this.paper);
+          
+          for (var i=0; i < INITIAL_ASTEROID_COUNT; i++) {
+            this.asteroids.push(new Asteroid(this.paper));
+          }
+          
+          this.resume();
         }
-        
-        this.resume();
+        else {
+          console.log("you've lost");
+          console.log("your score is: " + this.totalScore);
+          
+        }
       },
-      
+
+      levelUp: function(){
+        var Asteroid = window.SpaceRocks.Asteroid;
+        console.log("leveling up...");
+        for(var i=0; i<(INITIAL_ASTEROID_COUNT + this.level);i++)
+          this.asteroids.push(new Asteroid(this.paper));
+      },
       bulletCollision: function(){
         for(var b = 0; b < this.bullets.length; b++) {
           for(var a = 0; a < this.asteroids.length; a++) {
             try{
               if( distance(this.bullets[b].position, this.asteroids[a].position) < this.asteroids[a].asteroidRadius) {
                 this.sounds.asteroidExplode.play();
+                this.score += (this.asteroids[a].asteroidSize + 1) * 50;
                 this.bullets[b].obj.remove();
                 this.bullets.remove(b);
                 this.asteroids[a].obj.remove();
                 this.asteroids.remove(a);
+                
+                console.log(this.score);
               }
             }
             catch (exception){
@@ -63,8 +82,10 @@
           if (distance(this.asteroids[a].position, this.ship.position) < this.asteroidRadius){
             console.log("Ship collision detected.");
             this.sounds.shipExplode.play();
+            this.totalScore += this.score;
             this.ship.obj.remove();
             this.stop();
+            this.lives--;
           }
         }
       },
@@ -77,6 +98,7 @@
       resume: function() {
         $('#menu').hide();
         this.isRunning = true;
+        this.score = 0;
         this.update();
       },
       
@@ -208,7 +230,11 @@
       }
       this.bulletCollision();
       this.shipCollision();
-      
+
+      if(this.asteroids.length == 0){
+        this.levelUp();
+      }
+
       if (this.isRunning) this.update();
     };
     
