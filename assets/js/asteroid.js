@@ -2,12 +2,24 @@
 	var Game = window.SpaceRocks.Game;
 	var wrap = wrapAround(Game.windowSize);
   var sizes = [ 1, 3 , 6];
-	var Asteroid = function(paper) {
+	var Asteroid = function(paper, parent, dtheta) {
+    if(parent == null){
+      console.log("random asteroid");
+      this.position = { x: Math.random() * Game.windowSize, y: Math.random() * Game.windowSize };
+      this.angle = Math.floor(Math.random() * 360);
+      this.intSize = Math.floor(Math.random() * 3);
+      this.asteroidSize = sizes[this.intSize];
+    }
+    else{
+      console.log("on explosion");
+      this.position = parent.position;
+      this.angle = parent.angle + dtheta;
+      this.intSize = parent.intSize-1;
+      this.asteroidSize = sizes[this.intSize];
+    }
 
-    this.position = { x: Math.random() * Game.windowSize, y: Math.random() * Game.windowSize };
-    this.angle = Math.floor(Math.random() * 360);
-    this.asteroidSize = sizes[Math.floor(Math.random() * 3)];
     this.asteroidRadius = 15 * this.asteroidSize;
+
     var path = [
       "M20.402,17.626c0.84-0.772,2.468-0.381,5.979-1.853c1.716-0.72,1.572-1.265,1.566-1.928c-",
       "0.001-0.014,0-0.027,0-0.041h-0.005c-0.012-0.667-0.291-1.332-0.846-1.845L17.049,2.684c-",

@@ -4,6 +4,7 @@
     
     var WINDOW_SIZE = 500;
     var INITIAL_ASTEROID_COUNT = 5;
+    var COLLISION_ANGLE = 45;
     var FPS = 25;
 
     var game = {
@@ -60,12 +61,21 @@
             try{
               if( distance(this.bullets[b].position, this.asteroids[a].position) < this.asteroids[a].asteroidRadius) {
                 this.sounds.asteroidExplode.play();
-                this.score += (this.asteroids[a].asteroidSize + 1) * 50;
+                this.score += (this.asteroids[a].intSize + 1) * 50;
                 this.bullets[b].obj.remove();
                 this.bullets.remove(b);
+
+                var asteroid = this.asteroids[a];
+                var Asteroid = window.SpaceRocks.Asteroid;
+
                 this.asteroids[a].obj.remove();
                 this.asteroids.remove(a);
-                
+                if(asteroid.asteroidSize > 1){
+                  console.log("length is: " + this.asteroids.length);
+                  this.asteroids.push(new Asteroid(this.paper, asteroid, -COLLISION_ANGLE));
+                  this.asteroids.push(new Asteroid(this.paper, asteroid, COLLISION_ANGLE));
+                  console.log("length is: " + this.asteroids.length);
+                }
                 console.log(this.score);
               }
             }
