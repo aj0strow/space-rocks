@@ -70,12 +70,14 @@
       },
 
       pause: function() {
+        $('#scores').hide();
+        $('#overlay').show();
         $('#menu').show();
         this.isRunning = false;
       },
       
       resume: function() {
-        $('#menu').hide();
+        $('#overlay').hide();
         this.isRunning = true;
         this.update();
       },
@@ -157,10 +159,10 @@
       },
       
       space: function(){
+        var Bullet = window.SpaceRocks.Bullet;
+        
         this.sounds.gun.play();
-          var Bullet = window.SpaceRocks.Bullet;
-          var b = new Bullet(this.paper, this.ship, 0); 
-          this.bullets.push( b );
+        this.bullets.push( new Bullet(this.paper, this.ship, 0) );
       },
 
       shift: function() {
@@ -168,10 +170,11 @@
       },
     
       enter: function() {
-        if (!this.alienShipExists){
         var AlienShip = window.SpaceRocks.AlienShip;
-        this.alienShip = new AlienShip(this.paper, "alien");
-        this.alienShipExists = true;
+        
+        if (!this.alienShipExists){
+          this.alienShip = new AlienShip(this.paper, "alien");
+          this.alienShipExists = true;
         }
       }
     };
