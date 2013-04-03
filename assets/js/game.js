@@ -44,7 +44,6 @@
         else {
           console.log("you've lost");
           console.log("your score is: " + this.totalScore);
-          
         }
       },
 
