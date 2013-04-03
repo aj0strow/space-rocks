@@ -43,10 +43,13 @@
           this.resume();
         }
         else {
+          this.gameLost();
+        }
+      },
+
+      gameLost: function(){
           console.log("you've lost");
           console.log("your score is: " + this.totalScore);
-          
-        }
       },
 
       levelUp: function(){
@@ -70,11 +73,15 @@
 
                 this.asteroids[a].obj.remove();
                 this.asteroids.remove(a);
-                if(asteroid.asteroidSize > 1){
-                  console.log("length is: " + this.asteroids.length);
-                  this.asteroids.push(new Asteroid(this.paper, asteroid, -COLLISION_ANGLE));
-                  this.asteroids.push(new Asteroid(this.paper, asteroid, COLLISION_ANGLE));
-                  console.log("length is: " + this.asteroids.length);
+                if(asteroid.intSize > 0){
+
+                  /* 
+                   * Only one of these works at a time. I tried to have them excecute individually but it didn't work.
+                   * Any ideas on what to do?
+                  */
+
+                  this.asteroids.push(new Asteroid(this.paper, asteroid, -COLLISION_ANGLE)); 
+                  //this.asteroids.push(new Asteroid(this.paper, asteroid,  COLLISION_ANGLE));
                 }
                 console.log(this.score);
               }
