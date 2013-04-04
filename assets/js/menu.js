@@ -27,5 +27,10 @@ $(function() {
   $('#exit').click(function() {
     Game.resume();
   });
+  
+  $('#back').click(function() {
+    $('#scores').hide();
+    $('#menu').show();
+  });
     
 });

@@ -2,6 +2,7 @@
 
   var Game = (function() {
     
+    var LIFE = '<span class="life"></span>';
     var WINDOW_SIZE = 500;
     var INITIAL_ASTEROID_COUNT = 5;
     var INITIAL_LIVES = 3;
@@ -31,7 +32,8 @@
       },
       
       start: function() {
-        if (this.lives > 0) {
+        if (this.lives > 1) {
+          this.score = 0;
           var Ship = window.SpaceRocks.Ship;
           var Asteroid = window.SpaceRocks.Asteroid;
           
@@ -81,13 +83,13 @@
 
       shipCollision: function() {
         for (var a = 0; a < this.asteroids.length; a++){
-          if (distance(this.asteroids[a].position, this.ship.position) < this.asteroidRadius){
-            console.log("Ship collision detected.");
+          if (distance(this.asteroids[a].position, this.ship.position) < this.asteroidRadius) {
             this.sounds.shipExplode.play();
             this.totalScore += this.score;
             this.ship.obj.remove();
             this.stop();
             this.lives--;
+            $('.life').last().remove();
           }
         }
       },
@@ -102,7 +104,6 @@
       resume: function() {
         $('#overlay').hide();
         this.isRunning = true;
-        this.score = 0;
         this.update();
       },
       
@@ -113,6 +114,8 @@
 
       restart: function() {
         console.log('Restart called!'); 
+        
+        $('#lives').html(LIFE + LIFE + LIFE);
         
         if (this.ship && this.ship.obj) {
           this.ship.obj.remove();
@@ -127,7 +130,6 @@
           this.asteroids[i].obj.remove();
         }
         this.asteroids = [];
-        
         this.start();
       },
       
@@ -240,6 +242,8 @@
         this.levelUp();
       }
 
+      $('#score').text(this.score);
+      
       if (this.isRunning) this.update();
     };
     
