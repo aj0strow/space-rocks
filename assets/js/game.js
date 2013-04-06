@@ -19,7 +19,6 @@
       asteroids: [],
       bullets: [],
       alienBullets: [],
-      asteroidRadius: 20,
       alienShipExists: false,
       init: function(canvasContainer) {
         var SoundSystem = window.SpaceRocks.SoundSystem;
@@ -79,7 +78,7 @@
 
       shipCollision: function() {
         for (var a = 0; a < this.asteroids.length; a++){
-          if (distance(this.asteroids[a].position, this.ship.position) < this.asteroidRadius){
+          if (distance(this.asteroids[a].position, this.ship.position) < this.asteroids[a].asteroidRadius){
             console.log("Ship collision detected.");
             this.sounds.shipExplode.play();
             this.totalScore += this.score;
