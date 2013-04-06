@@ -78,14 +78,23 @@
 
       shipCollision: function() {
         for (var a = 0; a < this.asteroids.length; a++){
-          if (distance(this.asteroids[a].asteroidCenter, this.ship.position) < this.asteroids[a].asteroidRadius){
-            console.log("Ship collision detected.");
-            this.sounds.shipExplode.play();
-            this.totalScore += this.score;
-            this.ship.obj.remove();
-            this.stop();
-            this.lives--;
+          for (var p = 0; p < this.ship.points.length; p++){
+            if(distance(this.asteroids[a].asteroidCenter, this.ship.points[p]) < this.asteroids[a].asteroidRadius){
+              this.sounds.shipExplode.play();
+              this.totalScore += this.score;
+              this.ship.obj.remove();
+              this.stop();
+              this.lives--;
+            }
           }
+          // if (distance(this.asteroids[a].asteroidCenter, this.ship.position) < this.asteroids[a].asteroidRadius){
+          //   console.log("Ship collision detected.");
+          //   this.sounds.shipExplode.play();
+          //   this.totalScore += this.score;
+          //   this.ship.obj.remove();
+          //   this.stop();
+          //   this.lives--;
+          // }
         }
       },
 
