@@ -3,7 +3,7 @@
   var Game = (function() {
     
     var WINDOW_SIZE = 500;
-    var INITIAL_ASTEROID_COUNT = 5;
+    var INITIAL_ASTEROID_COUNT = 1;
     var FPS = 25;
 
     var game = {
@@ -74,6 +74,26 @@
             }
           }
         }
+        for(var b = 0; b < this.alienBullets.length; b++) {
+          for(var a = 0; a < this.asteroids.length; a++) {
+            try{
+              if( distance(this.alienBullets[b].position, this.asteroids[a].asteroidCenter) < this.asteroids[a].asteroidRadius) {
+                this.sounds.asteroidExplode.play();
+                this.score += (this.asteroids[a].asteroidSize + 1) * 50;
+                this.alienBullets[b].obj.remove();
+                this.alienBullets.remove(b);
+                this.asteroids[a].obj.remove();
+                this.asteroids.remove(a);
+                
+                console.log(this.score);
+              }
+            }
+            catch (exception){
+              if (exception == TypeError)
+                return true;
+            }
+          }
+        }
       },
 
       shipCollision: function() {
@@ -87,14 +107,34 @@
               this.lives--;
             }
           }
-          // if (distance(this.asteroids[a].asteroidCenter, this.ship.position) < this.asteroids[a].asteroidRadius){
-          //   console.log("Ship collision detected.");
-          //   this.sounds.shipExplode.play();
-          //   this.totalScore += this.score;
-          //   this.ship.obj.remove();
-          //   this.stop();
-          //   this.lives--;
-          // }
+        }
+        for (var b = 0; b < this.alienBullets.length; b++){
+          if(this.alienBullets[b].position.x > this.ship.points[0].x && this.alienBullets[b].position.x < this.ship.points[3].x){
+            if(this.alienBullets[b].position.y > this.ship.points[0].y && this.alienBullets[b].position.y < this.ship.points[3].y){
+              this.sounds.shipExplode.play();
+              this.totalScore += this.score;
+              this.ship.obj.remove();
+              this.alienBullets[b].obj.remove();
+              this.alienBullets.remove(b);
+              this.stop();
+              this.lives--;
+            }
+          }
+        }
+        if(this.alienShipExists){
+          for(p = 0; p < this.alienShip.points.length; p++){
+            if(this.alienShip.points[p].x > this.ship.points[0].x && this.alienShip.points[p].x < this.ship.points[3].x){
+              if(this.alienShip.points[p].y > this.ship.points[0].y && this.alienShip.points[p].y < this.ship.points[3].y){
+                this.sounds.shipExplode.play();
+                this.totalScore += this.score;
+                this.ship.obj.remove();
+                this.alienShip.obj.remove();
+                // this.alienShip.remove();
+                this.stop();
+                this.lives--;
+              }
+            }
+          }
         }
       },
 
