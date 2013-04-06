@@ -138,7 +138,7 @@
           }
           //if the ship is moving under it's maximum speed, it is accelerated, otherwise nothing is done
           else if(this.ship.speed < this.ship.MAX_SPEED) {
-            this.ship.speed *= this.ship.ACCELERATION
+            this.ship.speed += .75*Math.log(this.ship.ACCELERATION);
           }
           
           if (this.sounds.engine.paused) {
@@ -157,7 +157,7 @@
         if (this.isRunning) {
           // decelerates if the speed is above 1
           if (this.ship.speed > 1) {
-            this.ship.speed /= this.ship.ACCELERATION;
+            this.ship.speed -= .75*Math.log(this.ship.ACCELERATION);
           }
           // if it is moving at minimum speed, it stops the ship
           else this.ship.speed = 0;
