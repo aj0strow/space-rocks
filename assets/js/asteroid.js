@@ -27,8 +27,8 @@
      *as its parent, but changes the angle by a passed value dthetha. It also changes how big the asteroid is*/
     else{
       console.log("on explosion");
-      //gets position of parent asteroid
-      this.position = parent.position;
+      //Starting the child asteroids at parent.position +/- 1 fixes the issue where they are treated as one.
+      this.position = { x: parent.position.x + (dtheta/Math.abs(dtheta)), y: parent.position.y + (dtheta/Math.abs(dtheta))};
       //changes the parent asteroids angle by a passed value
       this.angle = parent.angle + dtheta;
       //changes the pointer for the asteroid to the size one below it
@@ -55,8 +55,16 @@
       "3.136l2.112-1.401c0.312-0.186,0.53-0.261,0.727-0.257c0.327,0.011,0.593,0.239,1.112,0.55l4.748,",
       "3.25c0.357,0.215,0.619,0.522,0.626,0.898l-2.813-1.254L18.161,8.58z"
     ].join('');
-    
     this.obj = paper.path(path).attr({ fill: '#000', stroke: 'none' });
+    //All asteroids were being drawn in the top left corner for a frame, which was visible and weird.
+    this.obj.transform( [
+                            //moves the asteroid to the new position
+                           't', this.position.x, ',', this.position.y,
+                            //keeps the same angle of rotation 
+                           'r', this.angle,
+                            //scales the asteroid to the scaling value which has been declared above
+                           's', this.asteroidSize, ',', this.asteroidSize]
+                           .join('') );
 
   }
   

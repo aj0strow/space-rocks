@@ -88,8 +88,7 @@
 
                   //it creates an asteroid with a size of one less
                   this.asteroids.push(new Asteroid(this.paper, asteroid, -COLLISION_ANGLE)); 
-
-                  //this.asteroids.push(new Asteroid(this.paper, asteroid,  COLLISION_ANGLE));
+                  this.asteroids.push(new Asteroid(this.paper, asteroid,  COLLISION_ANGLE));
                 }
                 console.log(this.score);
               }
