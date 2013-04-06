@@ -57,7 +57,7 @@
         for(var b = 0; b < this.bullets.length; b++) {
           for(var a = 0; a < this.asteroids.length; a++) {
             try{
-              if( distance(this.bullets[b].position, this.asteroids[a].position) < this.asteroids[a].asteroidRadius) {
+              if( distance(this.bullets[b].position, this.asteroids[a].asteroidCenter) < this.asteroids[a].asteroidRadius) {
                 this.sounds.asteroidExplode.play();
                 this.score += (this.asteroids[a].asteroidSize + 1) * 50;
                 this.bullets[b].obj.remove();
@@ -78,7 +78,7 @@
 
       shipCollision: function() {
         for (var a = 0; a < this.asteroids.length; a++){
-          if (distance(this.asteroids[a].position, this.ship.position) < this.asteroids[a].asteroidRadius){
+          if (distance(this.asteroids[a].asteroidCenter, this.ship.position) < this.asteroids[a].asteroidRadius){
             console.log("Ship collision detected.");
             this.sounds.shipExplode.play();
             this.totalScore += this.score;
