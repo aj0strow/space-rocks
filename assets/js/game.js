@@ -4,6 +4,7 @@
     
     var WINDOW_SIZE = 500;
     var INITIAL_ASTEROID_COUNT = 5;
+    var COLLISION_ANGLE = 45;
     var FPS = 25;
 
     var game = {
@@ -42,10 +43,13 @@
           this.resume();
         }
         else {
+          this.gameLost();
+        }
+      },
+
+      gameLost: function(){
           console.log("you've lost");
           console.log("your score is: " + this.totalScore);
-          
-        }
       },
 
       levelUp: function(){
@@ -58,14 +62,34 @@
         for(var b = 0; b < this.bullets.length; b++) {
           for(var a = 0; a < this.asteroids.length; a++) {
             try{
+              //true is a bullted detection is detected
               if( distance(this.bullets[b].position, this.asteroids[a].position) < this.asteroids[a].asteroidRadius) {
                 this.sounds.asteroidExplode.play();
-                this.score += (this.asteroids[a].asteroidSize + 1) * 50;
+                //increases score based of asteroid size
+                this.score += (this.asteroids[a].intSize + 1) * 50;
+
+                //removes bullet
                 this.bullets[b].obj.remove();
                 this.bullets.remove(b);
+
+                //stores the destroyed asteroid
+                var asteroid = this.asteroids[a];
+                //gets the Asteroid class
+                var Asteroid = window.SpaceRocks.Asteroid;
+
+                //removes the asteroid from the screen
                 this.asteroids[a].obj.remove();
                 this.asteroids.remove(a);
-                
+                //if the asteroid wasn't the smallest
+                if(asteroid.intSize > 0){
+                 
+                  /*Only one of these works at a time. I tried to have them excecute individually but it didn't work.
+                   *Any ideas on what to do?*/
+
+                  //it creates an asteroid with a size of one less
+                  this.asteroids.push(new Asteroid(this.paper, asteroid, -COLLISION_ANGLE)); 
+                  this.asteroids.push(new Asteroid(this.paper, asteroid,  COLLISION_ANGLE));
+                }
                 console.log(this.score);
               }
             }
