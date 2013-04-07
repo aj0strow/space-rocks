@@ -73,6 +73,16 @@
                 return true;
             }
           }
+          for(var p = 0; p < this.alienShip.points.length; p++){
+            if(this.bullets[b].position.x > this.alienShip.points[0].x && this.bullets[b].position.x < this.alienShip.points[3].x){
+              if(this.bullets[b].position.y > this.alienShip.points[0].y && this.bullets[b].position.y < this.alienShip.points[3].y){
+                this.sounds.asteroidExplode.play();
+                this.bullets[b].obj.remove();
+                this.alienShip.obj.remove();
+                this.alienShipExists = false;
+              }
+            }
+          }
         }
         for(var b = 0; b < this.alienBullets.length; b++) {
           for(var a = 0; a < this.asteroids.length; a++) {
@@ -129,6 +139,7 @@
                 this.totalScore += this.score;
                 this.ship.obj.remove();
                 this.alienShip.obj.remove();
+                this.alienShipExists = false;
                 // this.alienShip.remove();
                 this.stop();
                 this.lives--;
@@ -268,13 +279,13 @@
           var bul = new Bullet(this.paper, this.alienShip, 0, this.ship); 
           this.alienBullets.push( bul );
         }
+      }
         //updates all alien bullets
       for( var c=0; c < this.alienBullets.length; c++ ) {
         if (this.alienBullets[c].updatePosition()) {
           this.alienBullets[c].obj.remove();
           this.alienBullets.remove(c);  
         }  
-      }
       }
       this.bulletCollision();
       this.shipCollision();
