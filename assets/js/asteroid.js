@@ -24,6 +24,11 @@
     ].join('');
     
     this.obj = paper.path(path).attr({ fill: '#000', stroke: 'none' });
+    this.obj.transform( ['t', this.position.x, ',', this.position.y, 'r', this.angle, 's', this.asteroidSize, ',', this.asteroidSize].join('') );
+
+    
+    var bbox = this.obj.getBBox();
+    this.asteroidCenter = { x: bbox.x + (bbox.width / 2), y: bbox.y + (bbox.height / 2)}
 
   }
   
@@ -38,6 +43,8 @@
       this.position.y = wrap( this.position.y + dy );
       
       this.obj.transform( ['t', this.position.x, ',', this.position.y, 'r', this.angle, 's', this.asteroidSize, ',', this.asteroidSize].join('') );
+      var bbox = this.obj.getBBox();
+      this.asteroidCenter = { x: bbox.x + (bbox.width / 2), y: bbox.y + (bbox.height / 2)}
     }
   }
   

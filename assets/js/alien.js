@@ -18,6 +18,12 @@
       'transform': 't' + (this.position.x) + ',' + (this.position.y)
     });
     
+    this.points = new Array();
+    var bbox = this.obj.getBBox();
+    this.points[0] = { x: bbox.x, y: bbox.y};
+    this.points[1] = { x: bbox.x + bbox.width, y: bbox.y};
+    this.points[2] = { x: bbox.x, y: bbox.y + bbox.height};
+    this.points[3] = { x: bbox.x + bbox.width, y: bbox.y + bbox.height};
     this.shipType = type;
 
     this.speed = 10;
@@ -32,6 +38,12 @@
 
       console.log("ship center: "+ bbox.x + bbox.width / 2 +" , "+bbox.y + bbox.height / 2);  */
      
+      var bbox = this.obj.getBBox();
+      this.points[0] = { x: bbox.x, y: bbox.y};
+      this.points[1] = { x: bbox.x + bbox.width, y: bbox.y};
+      this.points[2] = { x: bbox.x, y: bbox.y + bbox.height};
+      this.points[3] = { x: bbox.x + bbox.width, y: bbox.y + bbox.height};
+      
       this.position.x += (3 * (Math.random() - .5) * this.speed * this.MOVE_DISTANCE);
       this.position.y += (3 * (Math.random() - .5) * this.speed * this.MOVE_DISTANCE);
 

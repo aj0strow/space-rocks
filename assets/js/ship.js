@@ -15,10 +15,15 @@
       'stroke-linejoin': 'sharp',
       'transform': 't' + (Game.windowSize / 2) + ',' + (Game.windowSize / 2) + 'r' + (-45)
     });
-    
     this.speed = 0;
     this.position = { x: Game.windowSize / 2, y: Game.windowSize / 2, };
     
+    this.points = new Array();
+    var bbox = this.obj.getBBox();
+    this.points[0] = { x: bbox.x, y: bbox.y};
+    this.points[1] = { x: bbox.x + bbox.width, y: bbox.y};
+    this.points[2] = { x: bbox.x, y: bbox.y + bbox.height};
+    this.points[3] = { x: bbox.x + bbox.width, y: bbox.y + bbox.height};
     // the angle the ship points
     this.angle = -45;
     this.anglechange = 0;
@@ -54,6 +59,12 @@
       //console.log('Ship position: (' + this.position.x + ', ' + this.position.y + ')');
 
       this.obj.transform("t" + (this.position.x) + "," + (this.position.y) + "r" + this.angle);
+
+      var bbox = this.obj.getBBox();
+      this.points[0] = { x: bbox.x, y: bbox.y};
+      this.points[1] = { x: bbox.x + bbox.width, y: bbox.y};
+      this.points[2] = { x: bbox.x, y: bbox.y + bbox.height};
+      this.points[3] = { x: bbox.x + bbox.width, y: bbox.y + bbox.height};
       
       // Wrap around if it goes off left or right
       //this.position.x = wrap(this.position.x);
