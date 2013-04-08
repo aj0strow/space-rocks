@@ -91,6 +91,7 @@
       // Detect collisions
 
       shipCollision: function() {
+        
         for (var a = 0; a < this.asteroids.length; a++){
           for (var p = 0; p < this.ship.points.length; p++){
             if(distance(this.asteroids[a].asteroidCenter, this.ship.points[p]) < this.asteroids[a].asteroidRadius){
@@ -161,11 +162,7 @@
         var Asteroid = window.SpaceRocks.Asteroid;
         var AlienShip = window.SpaceRocks.AlienShip;
                 
-        // Check for asteroid collision
-        
-        for(var b = 0; b < this.bullets.length; b++) {
-          var bullet = this.bullets[b];
-          
+        _.each(this.bullets, function(bullet) {
           var asteroid = _.find(this.asteroids, Asteroid.collidedWith(bullet.position));
           
           if (asteroid) {
@@ -178,7 +175,7 @@
               this.removeAlienShip();
             }
           }
-        }
+        }, this);
       },
 
       pause: function() {
