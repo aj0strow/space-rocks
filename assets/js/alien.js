@@ -15,9 +15,20 @@
       'stroke': '#3b4449',
       'stroke-width': 1,
       'stroke-linejoin': 'sharp',
-      'transform': 't' + (this.position.x) + ',' + (this.position.y)
+      'transform': [ 't', this.position.x, ',', this.position.y ].join('')
     });
     
+    this.points = new Array(4);
+    
+    this.updatePoints = function() {
+      var bbox = this.obj.getBBox();
+      this.points[0] = { x: bbox.x, y: bbox.y };
+      this.points[1] = { x: bbox.x + bbox.width, y: bbox.y };
+      this.points[2] = { x: bbox.x, y: bbox.y + bbox.height };
+      this.points[3] = { x: bbox.x + bbox.width, y: bbox.y + bbox.height };
+    };
+    
+    this.updatePoints();
     this.shipType = type;
 
     this.speed = 10;
@@ -31,6 +42,8 @@
       this.position.y = (bbox.y + bbox.height / 2) % Game.windowSize;
 
       console.log("ship center: "+ bbox.x + bbox.width / 2 +" , "+bbox.y + bbox.height / 2);  */
+      
+      this.updatePoints();
      
       this.position.x += (3 * (Math.random() - .5) * this.speed * this.MOVE_DISTANCE);
       this.position.y += (3 * (Math.random() - .5) * this.speed * this.MOVE_DISTANCE);
