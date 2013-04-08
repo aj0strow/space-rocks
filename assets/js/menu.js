@@ -14,8 +14,9 @@ $(function() {
   });
   
   $('#high-scores').click(function() {
-    console.log('High Score');
-    console.log('This is a stub. Replace the logic eventually in assets/js/ui-handlers/js');
+    $('#overlay').show();
+    $('#menu').hide();
+    $('#scores').show();
   });
   
   $('#proceed').click(function() {
@@ -25,6 +26,11 @@ $(function() {
   
   $('#exit').click(function() {
     Game.resume();
+  });
+  
+  $('#back').click(function() {
+    $('#scores').hide();
+    $('#menu').show();
   });
     
 });
