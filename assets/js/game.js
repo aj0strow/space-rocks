@@ -63,16 +63,26 @@
       },
       
       bulletCollision: function(){
+        var Asteroid = window.SpaceRocks.Asteroid;
+        
         for(var b = 0; b < this.bullets.length; b++) {
           for(var a = 0; a < this.asteroids.length; a++) {
             try{
               if( distance(this.bullets[b].position, this.asteroids[a].asteroidCenter) < this.asteroids[a].asteroidRadius) {
                 this.sounds.asteroidExplode.play();
-                this.score += (this.asteroids[a].asteroidSize + 1) * 50;
+                                
+                this.score += (this.asteroids[a].intSize + 1) * 50;
                 this.bullets[b].obj.remove();
                 this.bullets.remove(b);
-                this.asteroids[a].obj.remove();
+                
+                var asteroid = this.asteroids[a];
+                asteroid.obj.remove();
                 this.asteroids.remove(a);
+                
+                if (asteroid.intSize > 0) {
+                  this.asteroids.push(new Asteroid(this.paper, asteroid, -COLLISION_ANGLE)); 
+                  this.asteroids.push(new Asteroid(this.paper, asteroid,  COLLISION_ANGLE));
+                }
                 
                 console.log(this.score);
               }
