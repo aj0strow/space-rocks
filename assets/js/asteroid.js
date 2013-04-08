@@ -56,16 +56,12 @@
       "3.25c0.357,0.215,0.619,0.522,0.626,0.898l-2.813-1.254L18.161,8.58z"
     ].join('');
     this.obj = paper.path(path).attr({ fill: '#000', stroke: 'none' });
-    //All asteroids were being drawn in the top left corner for a frame, which was visible and weird.
-    this.obj.transform( [
-                            //moves the asteroid to the new position
-                           't', this.position.x, ',', this.position.y,
-                            //keeps the same angle of rotation 
-                           'r', this.angle,
-                            //scales the asteroid to the scaling value which has been declared above
-                           's', this.asteroidSize, ',', this.asteroidSize]
-                           .join('') );
-
+    
+    this.obj.transform( ['t', this.position.x, ',', this.position.y, 'r', this.angle, 's', 
+            this.asteroidSize, ',', this.asteroidSize].join('') );
+   
+    var bbox = this.obj.getBBox();
+    this.asteroidCenter = { x: bbox.x + (bbox.width / 2), y: bbox.y + (bbox.height / 2) };
   }
   
   Asteroid.prototype = {
@@ -79,14 +75,11 @@
       this.position.x = wrap( this.position.x + dx );
       this.position.y = wrap( this.position.y + dy );
 
-      this.obj.transform( [
-                            //moves the asteroid to the new position
-                           't', this.position.x, ',', this.position.y,
-                            //keeps the same angle of rotation 
-                           'r', this.angle,
-                            //scales the asteroid to the scaling value which has been declared above
-                           's', this.asteroidSize, ',', this.asteroidSize]
-                           .join('') );
+      this.obj.transform( ['t', this.position.x, ',', this.position.y, 'r', this.angle, 's', 
+              this.asteroidSize, ',', this.asteroidSize].join('') );
+      
+      var bbox = this.obj.getBBox();
+      this.asteroidCenter = { x: bbox.x + (bbox.width / 2), y: bbox.y + (bbox.height / 2) };
     }
   }
   

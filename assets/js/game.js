@@ -4,7 +4,7 @@
     
     var LIFE = '<span class="life"></span>';
     var WINDOW_SIZE = 500;
-    var INITIAL_ASTEROID_COUNT = 5;
+    var INITIAL_ASTEROID_COUNT = 1;
     var COLLISION_ANGLE = 45;
     var INITIAL_LIVES = 3;
     var FPS = 25;
@@ -22,7 +22,6 @@
       asteroids: [],
       bullets: [],
       alienBullets: [],
-      asteroidRadius: 20,
       alienShipExists: false,
       
       init: function(canvasContainer) {
@@ -64,37 +63,49 @@
       },
       
       bulletCollision: function(){
-        for (var b = 0; b < this.bullets.length; b++) {
-          for (var a = 0; a < this.asteroids.length; a++) {
+        for(var b = 0; b < this.bullets.length; b++) {
+          for(var a = 0; a < this.asteroids.length; a++) {
             try{
-              //true is a bullted detection is detected
-              if( distance(this.bullets[b].position, this.asteroids[a].position) < this.asteroids[a].asteroidRadius) {
+              if( distance(this.bullets[b].position, this.asteroids[a].asteroidCenter) < this.asteroids[a].asteroidRadius) {
                 this.sounds.asteroidExplode.play();
-                //increases score based of asteroid size
-                this.score += (this.asteroids[a].intSize + 1) * 50;
-
-                //removes bullet
+                this.score += (this.asteroids[a].asteroidSize + 1) * 50;
                 this.bullets[b].obj.remove();
                 this.bullets.remove(b);
-
-                //stores the destroyed asteroid
-                var asteroid = this.asteroids[a];
-                //gets the Asteroid class
-                var Asteroid = window.SpaceRocks.Asteroid;
-
-                //removes the asteroid from the screen
                 this.asteroids[a].obj.remove();
                 this.asteroids.remove(a);
-                //if the asteroid wasn't the smallest
-                if(asteroid.intSize > 0){
-                 
-                  /*Only one of these works at a time. I tried to have them excecute individually but it didn't work.
-                   *Any ideas on what to do?*/
-
-                  //it creates an asteroid with a size of one less
-                  this.asteroids.push(new Asteroid(this.paper, asteroid, -COLLISION_ANGLE)); 
-                  this.asteroids.push(new Asteroid(this.paper, asteroid,  COLLISION_ANGLE));
+                
+                console.log(this.score);
+              }
+            }
+            catch (exception){
+              if (exception == TypeError)
+                return true;
+            }
+          }
+          if (this.alienShip) {
+            for(var p = 0; p < this.alienShip.points.length; p++){
+              if(this.bullets[b].position.x > this.alienShip.points[0].x && this.bullets[b].position.x < this.alienShip.points[3].x){
+                if(this.bullets[b].position.y > this.alienShip.points[0].y && this.bullets[b].position.y < this.alienShip.points[3].y){
+                  this.sounds.asteroidExplode.play();
+                  this.bullets[b].obj.remove();
+                  this.alienShip.obj.remove();
+                  this.alienShipExists = false;
                 }
+              }
+            }
+          }
+        }
+        for(var b = 0; b < this.alienBullets.length; b++) {
+          for(var a = 0; a < this.asteroids.length; a++) {
+            try{
+              if( distance(this.alienBullets[b].position, this.asteroids[a].asteroidCenter) < this.asteroids[a].asteroidRadius) {
+                this.sounds.asteroidExplode.play();
+                this.score += (this.asteroids[a].asteroidSize + 1) * 50;
+                this.alienBullets[b].obj.remove();
+                this.alienBullets.remove(b);
+                this.asteroids[a].obj.remove();
+                this.asteroids.remove(a);
+                
                 console.log(this.score);
               }
             }
@@ -108,13 +119,45 @@
 
       shipCollision: function() {
         for (var a = 0; a < this.asteroids.length; a++){
-          if (distance(this.asteroids[a].position, this.ship.position) < this.asteroidRadius) {
-            this.sounds.shipExplode.play();
-            this.totalScore += this.score;
-            this.ship.obj.remove();
-            this.stop();
-            this.lives--;
-            $('.life').last().remove();
+          for (var p = 0; p < this.ship.points.length; p++){
+            if(distance(this.asteroids[a].asteroidCenter, this.ship.points[p]) < this.asteroids[a].asteroidRadius){
+              this.sounds.shipExplode.play();
+              this.totalScore += this.score;
+              this.ship.obj.remove();
+              this.stop();
+              this.lives--;
+            }
+          }
+        }
+        for (var b = 0; b < this.alienBullets.length; b++){
+          if(this.alienBullets[b].position.x > this.ship.points[0].x && this.alienBullets[b].position.x < this.ship.points[3].x){
+            if(this.alienBullets[b].position.y > this.ship.points[0].y && this.alienBullets[b].position.y < this.ship.points[3].y){
+              this.sounds.shipExplode.play();
+              this.totalScore += this.score;
+              this.ship.obj.remove();
+              this.alienBullets[b].obj.remove();
+              this.alienBullets.remove(b);
+              this.stop();
+              this.lives--;
+            }
+          }
+        }
+        if(this.alienShipExists){
+          for(p = 0; p < this.alienShip.points.length; p++){
+            if(this.alienShip.points[p].x > this.ship.points[0].x && this.alienShip.points[p].x < this.ship.points[3].x){
+              if(this.alienShip.points[p].y > this.ship.points[0].y && this.alienShip.points[p].y < this.ship.points[3].y){
+                this.sounds.shipExplode.play();
+                this.totalScore += this.score;
+                this.ship.obj.remove();
+                this.alienShip.obj.remove();
+                this.alienShipExists = false;
+                // this.alienShip.remove();
+                console.log("Lives: " + this.lives);
+                this.lives--;
+                $('.life').last().remove();
+                this.stop();
+              }
+            }
           }
         }
       },

@@ -15,7 +15,8 @@
       'stroke-linejoin': 'sharp',
       'transform': 't' + (Game.windowSize / 2) + ',' + (Game.windowSize / 2) + 'r' + (-45)
     });
-    
+    this.points = new Array(4);
+        
     this.speed = 0;
     this.position = { x: Game.windowSize / 2, y: Game.windowSize / 2, };
     
@@ -29,6 +30,16 @@
     this.ACCELERATION = 2;
     this.MAX_SPEED = 16;
     this.MOVE_DISTANCE = .5;
+    
+    this.updatePoints = function() {
+      var bbox = this.obj.getBBox();
+      this.points[0] = { x: bbox.x, y: bbox.y };
+      this.points[1] = { x: bbox.x + bbox.width, y: bbox.y };
+      this.points[2] = { x: bbox.x, y: bbox.y + bbox.height };
+      this.points[3] = { x: bbox.x + bbox.width, y: bbox.y + bbox.height };
+    };
+    
+    this.updatePoints();
     
     this.updateAngle = function() {
       this.obj.rotate(this.anglechange);
@@ -64,6 +75,7 @@
       //console.log("updataing ship");
       this.updateAngle();
       this.updatePosition();
+      this.updatePoints();
     };
 
   }
