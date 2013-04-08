@@ -28,7 +28,7 @@
 
     this.ANGLE_DELTA_INCREMENT = 2.5;
     this.ACCELERATION = 2;
-    this.MAX_SPEED = 16;
+    this.MAX_SPEED = 20;
     this.MOVE_DISTANCE = .5;
     
     this.updatePoints = function() {
