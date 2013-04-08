@@ -73,12 +73,19 @@
       removeAsteroid: function(asteroid) {
         var Asteroid = window.SpaceRocks.Asteroid;
         
+        this.sounds.asteroidExplode.play();
         asteroid.obj.remove();
         this.asteroids = _.without(this.asteroids, asteroid);
         if (asteroid.intSize > 0) {
           this.asteroids.push(new Asteroid(this.paper, asteroid, -COLLISION_ANGLE)); 
           this.asteroids.push(new Asteroid(this.paper, asteroid,  COLLISION_ANGLE));
         }
+      },
+      
+      removeAlienShip: function() {
+        this.sounds.asteroidExplode.play();
+        this.alienShip.obj.remove();
+        this.alienShip = null;
       },
       
       // Detect collisions
@@ -152,9 +159,9 @@
       
       bulletCollision: function(){
         var Asteroid = window.SpaceRocks.Asteroid;
+        var AlienShip = window.SpaceRocks.AlienShip;
                 
         // Check for asteroid collision
-
         
         for(var b = 0; b < this.bullets.length; b++) {
           var bullet = this.bullets[b];
@@ -162,19 +169,13 @@
           var asteroid = _.find(this.asteroids, Asteroid.collidedWith(bullet.position));
           
           if (asteroid) {
-            this.sounds.asteroidExplode.play();
             this.score += (asteroid.intSize + 1) * 50;
             this.removeBullet(bullet);
             this.removeAsteroid(asteroid);
           } else if (this.alienShip) {
-            var points = this.alienShip.points;
-            var collided = bullet.position.x > points[0].x && bullet.position.x < points[3].x
-                    && bullet.position.y > points[0].y && bullet.position.y < points[3].y;
-            if (collided) {
-              this.sounds.asteroidExplode.play();
-              bullet.obj.remove();
-              this.alienShip.obj.remove();
-              this.alienShip = null;
+            if (AlienShip.collidedWith(bullet.position)(this.alienShip)) {
+              this.removeBullet(bullet);
+              this.removeAlienShip();
             }
           }
         }
