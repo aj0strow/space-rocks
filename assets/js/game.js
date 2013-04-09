@@ -122,6 +122,7 @@
         _.each(this.bullet, function(bullet){
           this.removeBullet(bullet);
         }, this);
+        $('.life').last().remove();
       },
       // Detect collisions
 
