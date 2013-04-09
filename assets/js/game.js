@@ -7,7 +7,7 @@
     var INITIAL_ASTEROID_COUNT = 1;
     var COLLISION_ANGLE = 45;
     var INITIAL_LIVES = 3;
-    var FPS = 25;
+    var FPS = 30;
 
     var game = {
       lives: INITIAL_LIVES,
@@ -57,9 +57,9 @@
 
       levelUp: function(){
         var Asteroid = window.SpaceRocks.Asteroid;
-        this.level++;4
+        this.level++;
         console.log(this.level);
-        if (!this.alienShip && (this.level % 2 == 0)){ 
+        if (!this.alienShip && (this.level % 2 == 1)){ 
           var AlienShip = window.SpaceRocks.AlienShip;
           this.alienShip = new AlienShip(this.paper, "alien");
         }
@@ -97,6 +97,7 @@
       removeAlienShip: function() {
         this.sounds.asteroidExplode.play();
         this.alienShip.obj.remove();
+        this.score += 400;
         this.alienShip = null;
       },
       
@@ -118,6 +119,8 @@
         _.each(this.ship.points, function(point) {
           if (_.any(this.asteroids, Asteroid.collidedWith(point), this)) {
             this.removeShip();
+          if(this.alienShip)
+            this.removeAlienShip();
           }
         }, this);
 
@@ -128,7 +131,7 @@
                   bullet.position.y < this.ship.points[3].y;
           if (collided) {
             if(this.alienShip)
-              this.removeAlienShip;
+              this.removeAlienShip();
             this.removeAlienBullet(bullet);
             return this.removeShip();
           }
@@ -162,11 +165,9 @@
           var asteroid = _.find(this.asteroids, Asteroid.collidedWith(bullet.position));
           
           if (asteroid) {
-            this.score += (asteroid.intSize + 1) * 50;
+            this.score += (4 - asteroid.intSize) * 50;
             this.removeBullet(bullet);
             this.removeAsteroid(asteroid);
-            if(this.alienShip)
-              this.removeAlienShip();
 
           } else if (this.alienShip) {
             if (alienCollision(bullet.position)) {
@@ -283,7 +284,7 @@
     };
     
     // This is the game loop
-    
+
     var update = function() {
       var Bullet = window.SpaceRocks.Bullet;
       
