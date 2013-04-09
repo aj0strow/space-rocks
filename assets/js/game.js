@@ -46,13 +46,13 @@
           this.resume();
         }
         else {
-          this.gameLost();
+          this.loseGame();
         }
       },
 
-      gameLost: function() {
-          console.log("you've lost");
-          console.log("your score is: " + this.totalScore);
+      loseGame: function() {
+        console.log("you've lost");
+        console.log("your score is: " + this.totalScore);
       },
 
       levelUp: function(){
@@ -70,6 +70,12 @@
         return bullet;
       },
       
+      removeAlienBullet: function(alienBullet) {
+        alienBullet.obj.remove();
+        this.alienBullets = _.without(this.alienBullets, alienBullet);
+        return alienBullet;
+      },
+      
       removeAsteroid: function(asteroid) {
         var Asteroid = window.SpaceRocks.Asteroid;
         
@@ -78,8 +84,9 @@
         this.asteroids = _.without(this.asteroids, asteroid);
         if (asteroid.intSize > 0) {
           this.asteroids.push(new Asteroid(this.paper, asteroid, -COLLISION_ANGLE)); 
-          this.asteroids.push(new Asteroid(this.paper, asteroid,  COLLISION_ANGLE));
+          this.asteroids.push(new Asteroid(this.paper, asteroid, COLLISION_ANGLE));
         }
+        return asteroid;
       },
       
       removeAlienShip: function() {
@@ -88,80 +95,62 @@
         this.alienShip = null;
       },
       
+      removeShip: function() {
+        this.sounds.shipExplode.play();
+        this.totalScore += this.score;
+        this.ship.obj.remove();
+        this.lives--;
+        $('.life').last().remove();
+        this.stop();
+      },
+      
       // Detect collisions
 
       shipCollision: function() {
-        
-        for (var a = 0; a < this.asteroids.length; a++){
-          for (var p = 0; p < this.ship.points.length; p++){
-            if(distance(this.asteroids[a].asteroidCenter, this.ship.points[p]) < this.asteroids[a].asteroidRadius){
-              this.sounds.shipExplode.play();
-              this.totalScore += this.score;
-              this.ship.obj.remove();
-              this.stop();
-              this.lives--;
-            }
+        var Asteroid = window.SpaceRocks.Asteroid;
+        var Ship = window.SpaceRocks.Ship;
+                
+        _.each(this.ship.points, function(point) {
+          if (_.any(this.asteroids, Asteroid.collidedWith(point), this)) {
+            this.removeShip();
           }
-        }
-        for (var b = 0; b < this.alienBullets.length; b++){
-          if(this.alienBullets[b].position.x > this.ship.points[0].x && this.alienBullets[b].position.x < this.ship.points[3].x){
-            if(this.alienBullets[b].position.y > this.ship.points[0].y && this.alienBullets[b].position.y < this.ship.points[3].y){
-              this.sounds.shipExplode.play();
-              this.totalScore += this.score;
-              this.ship.obj.remove();
-              this.alienBullets[b].obj.remove();
-              this.alienBullets.remove(b);
-              this.stop();
-              this.lives--;
-            }
+        }, this);
+
+        _.each(this.alienBullets, function(bullet) {
+          var collided = bullet.position.x > this.ship.points[0].x && 
+                  bullet.position.x < this.ship.points[3].x &&
+                  bullet.position.y > this.ship.points[0].y &&
+                  bullet.position.y < this.ship.points[3].y;
+          if (collided) {
+            this.removeAlienBullet(bullet);
+            return this.removeShip();
           }
-        }
-        if(this.alienShip){
-          for(p = 0; p < this.alienShip.points.length; p++){
-            if(this.alienShip.points[p].x > this.ship.points[0].x && this.alienShip.points[p].x < this.ship.points[3].x){
-              if(this.alienShip.points[p].y > this.ship.points[0].y && this.alienShip.points[p].y < this.ship.points[3].y){
-                this.sounds.shipExplode.play();
-                this.totalScore += this.score;
-                this.ship.obj.remove();
-                this.alienShip.obj.remove();
-                // this.alienShip.remove();
-                console.log("Lives: " + this.lives);
-                this.lives--;
-                $('.life').last().remove();
-                this.stop();
-              }
-            }
-          }
+        }, this);
+
+        if (this.alienShip && _.any(this.alienShip.points, Ship.collision(this.ship))) {
+          this.removeAlienShip();
+          this.removeShip();
         }
       },
       
       alienBulletCollision: function() {
-        for(var b = 0; b < this.alienBullets.length; b++) {
-          for(var a = 0; a < this.asteroids.length; a++) {
-            try{
-              if( distance(this.alienBullets[b].position, this.asteroids[a].asteroidCenter) < this.asteroids[a].asteroidRadius) {
-                this.sounds.asteroidExplode.play();
-                this.score += (this.asteroids[a].asteroidSize + 1) * 50;
-                this.alienBullets[b].obj.remove();
-                this.alienBullets.remove(b);
-                this.asteroids[a].obj.remove();
-                this.asteroids.remove(a);
-                
-                console.log(this.score);
-              }
-            }
-            catch (exception){
-              if (exception == TypeError)
-                return true;
-            }
+        var Asteroid = window.SpaceRocks.Asteroid;
+        
+        _.each(this.alienBullets, function(bullet) {
+          var asteroid = _.find(this.asteroids, Asteroid.collidedWith(bullet.position));
+          if (asteroid) {
+            this.removeAlienBullet(bullet);
+            this.removeAsteroid(asteroid);
           }
-        }
+        }, this);
       },
       
       bulletCollision: function(){
         var Asteroid = window.SpaceRocks.Asteroid;
         var AlienShip = window.SpaceRocks.AlienShip;
-                
+        
+        var alienCollision = AlienShip.collision(this.alienShip);
+        
         _.each(this.bullets, function(bullet) {
           var asteroid = _.find(this.asteroids, Asteroid.collidedWith(bullet.position));
           
@@ -170,7 +159,7 @@
             this.removeBullet(bullet);
             this.removeAsteroid(asteroid);
           } else if (this.alienShip) {
-            if (AlienShip.collidedWith(bullet.position)(this.alienShip)) {
+            if (alienCollision(bullet.position)) {
               this.removeBullet(bullet);
               this.removeAlienShip();
             }

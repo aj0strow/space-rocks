@@ -56,12 +56,14 @@
 
   }
   
-  AlienShip.collidedWith = function(position) {
-    var test = function(alien) {
-      return position.x > alien.points[0].x && position.x < alien.points[3].x &&
-              position.y > alien.points[0].y && position.y < alien.points[3].y;
+  AlienShip.collision = function(alien) {
+    if (alien) {
+      var test = function(position) {
+        return position.x > alien.points[0].x && position.x < alien.points[3].x &&
+                position.y > alien.points[0].y && position.y < alien.points[3].y;
+      }
+      return test;
     }
-    return test;
   }
   
   window.SpaceRocks.AlienShip = AlienShip;
