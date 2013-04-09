@@ -19,10 +19,14 @@
 			this.gun.setAttribute('src', '/sound/shipGun_voice.mp3');
 			this.asteroidExplode.setAttribute('src', '/sound/asteroidExplosion_voice.mp3');
 			this.shipExplode.setAttribute('src', '/sound/shipExplosion_voice.mp3');
+			this.music.setAttribute('src', '/sound/MOONDARK_PROJECT_-_PSY4_EVOLUTIONS.mp3');
 		} else {
-			//Set to non-voice files
+			this.engine.setAttribute('src', '/sound/shipAccelerate.mp3');
+			this.gun.setAttribute('src', '/sound/shipGun.mp3');
+			this.asteroidExplode.setAttribute('src', '/sound/asteroidExplosion.mp3');
+			this.shipExplode.setAttribute('src', '/sound/shipExplosion.mp3');
+			this.music.setAttribute('src', '/sound/Balil-Parasight.mp3');
 		}
-		this.music.setAttribute('src', '/sound/MOONDARK_PROJECT_-_PSY4_EVOLUTIONS.mp3');
 
 		//Set loops
 		this.engine.loop = true;

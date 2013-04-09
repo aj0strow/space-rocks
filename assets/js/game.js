@@ -28,7 +28,7 @@
         var SoundSystem = window.SpaceRocks.SoundSystem;
         
         this.paper = new Raphael(canvasContainer, this.windowSize, this.windowSize);
-        this.sounds = new SoundSystem({ voiceMode: true });
+        this.sounds = new SoundSystem({ voiceMode: false });
       },
       
       start: function() {
