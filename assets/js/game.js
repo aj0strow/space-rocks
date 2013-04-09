@@ -303,7 +303,7 @@
         }, this);
         
         if(this.alienShip){
-          this.alienShip.updatePosition();
+          this.alienShip.update();
           if (Math.random() > 0.9){
             this.sounds.gun.play();
             var bullet = new Bullet(this.paper, this.alienShip, 0, this.ship); 
