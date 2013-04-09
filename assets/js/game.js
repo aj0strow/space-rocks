@@ -7,7 +7,7 @@
     var INITIAL_ASTEROID_COUNT = 1;
     var COLLISION_ANGLE = 45;
     var INITIAL_LIVES = 3;
-    var FPS = 25;
+    var FPS = 30;
 
     var game = {
       lives: INITIAL_LIVES,
@@ -32,7 +32,7 @@
       },
       
       start: function() {
-        if (this.lives > 1) {
+        if (this.lives > 0) {
           this.score = 0;
           var Ship = window.SpaceRocks.Ship;
           var Asteroid = window.SpaceRocks.Asteroid;
@@ -57,7 +57,12 @@
 
       levelUp: function(){
         var Asteroid = window.SpaceRocks.Asteroid;
-        console.log("leveling up...");
+        this.level++;
+        console.log(this.level);
+        if (!this.alienShip && (this.level % 2 == 1)){ 
+          var AlienShip = window.SpaceRocks.AlienShip;
+          this.alienShip = new AlienShip(this.paper, "alien");
+        }
         for (var i=0; i<(INITIAL_ASTEROID_COUNT + this.level); i++)
           this.asteroids.push(new Asteroid(this.paper));
       },
@@ -92,6 +97,7 @@
       removeAlienShip: function() {
         this.sounds.asteroidExplode.play();
         this.alienShip.obj.remove();
+        this.score += 400;
         this.alienShip = null;
       },
       
@@ -113,6 +119,8 @@
         _.each(this.ship.points, function(point) {
           if (_.any(this.asteroids, Asteroid.collidedWith(point), this)) {
             this.removeShip();
+          if(this.alienShip)
+            this.removeAlienShip();
           }
         }, this);
 
@@ -122,6 +130,8 @@
                   bullet.position.y > this.ship.points[0].y &&
                   bullet.position.y < this.ship.points[3].y;
           if (collided) {
+            if(this.alienShip)
+              this.removeAlienShip();
             this.removeAlienBullet(bullet);
             return this.removeShip();
           }
@@ -155,9 +165,10 @@
           var asteroid = _.find(this.asteroids, Asteroid.collidedWith(bullet.position));
           
           if (asteroid) {
-            this.score += (asteroid.intSize + 1) * 50;
+            this.score += (4 - asteroid.intSize) * 50;
             this.removeBullet(bullet);
             this.removeAsteroid(asteroid);
+
           } else if (this.alienShip) {
             if (alienCollision(bullet.position)) {
               this.removeBullet(bullet);
@@ -269,16 +280,11 @@
       },
     
       enter: function() {
-        var AlienShip = window.SpaceRocks.AlienShip;
-        
-        if (!this.alienShip){
-          this.alienShip = new AlienShip(this.paper, "alien");
-        }
       }
     };
     
     // This is the game loop
-    
+
     var update = function() {
       var Bullet = window.SpaceRocks.Bullet;
       

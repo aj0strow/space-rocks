@@ -31,7 +31,8 @@
     this.updatePoints();
     this.shipType = type;
 
-    this.speed = 10;
+    this.angle = Math.floor(Math.random()*360);
+    this.SPEED = 3;
     this.MOVE_DISTANCE = .5;
     
     
@@ -40,7 +41,7 @@
       var bbox = this.obj.getBBox();
       this.position.x = (bbox.x + bbox.width / 2) % Game.windowSize;
       this.position.y = (bbox.y + bbox.height / 2) % Game.windowSize;
-      */
+      
       
       this.updatePoints();
      
@@ -51,6 +52,17 @@
       this.position.y = wrap(this.position.y);
       
       this.obj.transform("t" + (this.position.x) + "," + (this.position.y));
+      */
+
+      var angle = toRadians(this.angle);
+      var dx = Math.sin(angle) * this.SPEED;
+      var dy = Math.cos(angle + Math.PI) * this.SPEED;
+      
+      this.position.x = wrap( this.position.x + dx );
+      this.position.y = wrap( this.position.y + dy );
+      
+      this.obj.transform( ['t', this.position.x, ',', this.position.y, 
+                           'r', this.angle].join('') );
 
     };
 
