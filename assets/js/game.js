@@ -95,21 +95,34 @@
       },
       
       removeAlienShip: function() {
-        this.sounds.asteroidExplode.play();
-        this.alienShip.obj.remove();
-        this.score += 400;
-        this.alienShip = null;
+        if(this.alienShip){
+          this.sounds.asteroidExplode.play();
+          this.alienShip.obj.remove();
+          this.score += 400;
+          this.alienShip = null;
+       }
       },
       
       removeShip: function() {
         this.sounds.shipExplode.play();
         this.totalScore += this.score;
         this.ship.obj.remove();
+        this.level = 0;
         this.lives--;
         $('.life').last().remove(); // why doesnt this work?
         this.stop();
       },
       
+      shipExplosion: function(){
+        this.removeAlienShip();
+        this.removeShip();
+        _.each(this.alienBullets, function(bullet){
+          this.removeAlienBullet(bullet);
+        }, this);
+        _.each(this.bullet, function(bullet){
+          this.removeBullet(bullet);
+        }, this);
+      },
       // Detect collisions
 
       shipCollision: function() {
@@ -118,7 +131,7 @@
                 
         _.each(this.ship.points, function(point) {
           if (_.any(this.asteroids, Asteroid.collidedWith(point), this)) {
-            this.removeShip();
+            this.shipExplosion();
           if(this.alienShip)
             this.removeAlienShip();
           }
@@ -133,13 +146,13 @@
             if(this.alienShip)
               this.removeAlienShip();
             this.removeAlienBullet(bullet);
-            return this.removeShip();
+            return this.shipExplosion();
           }
         }, this);
 
         if (this.alienShip && _.any(this.alienShip.points, Ship.collision(this.ship))) {
           this.removeAlienShip();
-          this.removeShip();
+          this.shipExplosion();
         }
       },
       
