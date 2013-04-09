@@ -9,6 +9,7 @@ $(function() {
   });
   
   $('#two-player-game').click(function() {
+    Game.restart();
     console.log('Two Player');
     console.log('This is a stub. Replace the logic eventually in assets/js/ui-handlers/js');
   });
