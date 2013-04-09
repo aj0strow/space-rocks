@@ -280,6 +280,8 @@
       },
     
       enter: function() {
+          var SmartAlienShip = window.SpaceRocks.SmartAlienShip;
+          this.smartAlienShip = new SmartAlienShip(this.paper, this.ship);
       }
     };
     
@@ -309,6 +311,14 @@
             var bullet = new Bullet(this.paper, this.alienShip, 0, this.ship); 
             this.alienBullets.push( bullet );
           }        
+        }
+        if(this.smartAlienShip){
+          this.smartAlienShip.updatePosition();
+            if (Math.random() > 0.9){
+              this.sounds.gun.play();
+              var bullet = new Bullet(this.paper, this.smartAlienShip, 0, this.ship); 
+              this.alienBullets.push( bullet );
+            }
         }
         this.shipCollision();
         this.alienBulletCollision();
