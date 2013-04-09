@@ -66,6 +66,13 @@
 
     };
 
+    this.update = function() {
+      //console.log("updataing ship");
+      // this.updateAngle();
+      this.updatePosition();
+      this.updatePoints();
+    };
+
   }
   
   AlienShip.collision = function(alien) {
