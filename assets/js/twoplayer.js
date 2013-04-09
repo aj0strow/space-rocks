@@ -271,6 +271,6 @@
     return game;
   })();
 
-  window.SpaceRocks.Game= Game;
+  window.SpaceRocks.TwoPlayerGame= Game;
   
 })();
