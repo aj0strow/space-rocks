@@ -57,7 +57,12 @@
 
       levelUp: function(){
         var Asteroid = window.SpaceRocks.Asteroid;
-        console.log("leveling up...");
+        this.level++;4
+        console.log(this.level);
+        if (!this.alienShip && (this.level % 2 == 0)){ 
+          var AlienShip = window.SpaceRocks.AlienShip;
+          this.alienShip = new AlienShip(this.paper, "alien");
+        }
         for (var i=0; i<(INITIAL_ASTEROID_COUNT + this.level); i++)
           this.asteroids.push(new Asteroid(this.paper));
       },
@@ -269,11 +274,6 @@
       },
     
       enter: function() {
-        var AlienShip = window.SpaceRocks.AlienShip;
-        
-        if (!this.alienShip){
-          this.alienShip = new AlienShip(this.paper, "alien");
-        }
       }
     };
     
