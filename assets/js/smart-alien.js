@@ -32,7 +32,7 @@
     this.shipType = "smartAlien";
 
     this.angle = Math.atan2((playerShip.position.x - this.position.x) , (playerShip.position.y - this.position.y));
-    this.SPEED = 5;
+    this.SPEED = 3;
     this.MOVE_DISTANCE = .5
 ;    
     

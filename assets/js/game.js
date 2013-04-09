@@ -59,7 +59,7 @@
         var Asteroid = window.SpaceRocks.Asteroid;
         this.level++;
         console.log(this.level);
-        if (!this.alienShip && (this.level % 2 == 1)){ 
+        if (!this.alienShip && !this.smartAlienShip && (this.level % 2 == 1)){ 
           var AlienShip = window.SpaceRocks.AlienShip;
           this.alienShip = new AlienShip(this.paper, "alien");
         }
@@ -281,7 +281,8 @@
     
       enter: function() {
           var SmartAlienShip = window.SpaceRocks.SmartAlienShip;
-          this.smartAlienShip = new SmartAlienShip(this.paper, this.ship);
+          if(!this.smartAlienShip && !this.alienShip)
+            this.smartAlienShip = new SmartAlienShip(this.paper, this.ship);
       }
     };
     

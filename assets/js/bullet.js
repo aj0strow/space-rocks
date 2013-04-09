@@ -8,17 +8,13 @@
   var Bullet = function(paper, ship, bonusAngle, playerShip) {  
     
     if (ship.shipType == "smartAlien") {
-      console.log(Ship);
-      var dx = ship.position.x - playerShip.position.x,
-          dy = ship.position.y - playerShip.position.y;
-      console.log(dx + " , " + dy);
-      this.angle = Math. atan(dx / dy);
+      this.angle = toDegrees(Math.atan2((playerShip.position.x - ship.position.x) , (playerShip.position.y - ship.position.y)));
     } else if(ship.shipType == "alien") {
       this.angle = Math.floor(Math.random() * 360);
     } else {
       this.angle = ship.angle + 45;
     }
-      
+    
     // gets the bounding box
     var bbox = ship.obj.getBBox();
 
