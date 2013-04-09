@@ -100,7 +100,7 @@
         this.totalScore += this.score;
         this.ship.obj.remove();
         this.lives--;
-        $('.life').last().remove();
+        $('.life').last().remove(); // why doesnt this work?
         this.stop();
       },
       
@@ -280,42 +280,36 @@
     // This is the game loop
     
     var update = function() {
-      this.ship.update();
-      for (var i=0; i < this.asteroids.length; i++) {
-        this.asteroids[i].updatePosition();
-      }
-      for (var b=0; b < this.bullets.length; b++) {
-        if (this.bullets[b].updatePosition()) {
-          this.bullets[b].obj.remove();
-          this.bullets.remove(b);  
-        }  
-      }
-      if(this.alienShip){
-        this.alienShip.updatePosition();
-        //makes bullets occasionally
-        if (Math.random() > 0.9){
-          this.sounds.gun.play();
-          var Bullet = window.SpaceRocks.Bullet;
-          var bul = new Bullet(this.paper, this.alienShip, 0, this.ship); 
-          this.alienBullets.push( bul );
-        }
-        //updates all alien bullets
-        for (var c=0; c < this.alienBullets.length; c++) {
-          if (this.alienBullets[c].updatePosition()) {
-            this.alienBullets[c].obj.remove();
-            this.alienBullets.remove(c);  
-          }  
-        }
-      }
-      this.shipCollision();
-      this.alienBulletCollision();
-      this.bulletCollision();
-
-      if (this.asteroids.length == 0){
+      var Bullet = window.SpaceRocks.Bullet;
+      
+      if (this.asteroids.length == 0) {
         this.levelUp();
-      }
+      } else {
+        this.ship.update();
+        _.invoke(this.asteroids, 'updatePosition');
+        
+        _.each(this.bullets, function(bullet) {
+          if (bullet.updatePosition()) this.removeBullet(bullet);
+        }, this);
+        
+        _.each(this.alienBullets, function(bullet) {
+          if (bullet.updatePosition()) this.removeAlienBullet(bullet);
+        }, this);
+        
+        if(this.alienShip){
+          this.alienShip.updatePosition();
+          if (Math.random() > 0.9){
+            this.sounds.gun.play();
+            var bullet = new Bullet(this.paper, this.alienShip, 0, this.ship); 
+            this.alienBullets.push( bullet );
+          }        
+        }
+        this.shipCollision();
+        this.alienBulletCollision();
+        this.bulletCollision();
 
-      $('#score').text(this.score);
+        $('#score').text(this.score);
+      }
       
       if (this.isRunning) this.update();
     };
