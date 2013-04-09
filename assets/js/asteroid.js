@@ -83,6 +83,13 @@
     }
   }
   
+  Asteroid.collidedWith = function(position) {
+    var test = function(asteroid) {
+      return distance(position, asteroid.asteroidCenter) < asteroid.asteroidRadius;
+    }
+    return test;
+  }
+  
   window.SpaceRocks.Asteroid = Asteroid;
 			
 })();

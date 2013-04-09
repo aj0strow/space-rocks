@@ -80,6 +80,15 @@
 
   }
   
+  Ship.collision = function(ship) {
+    var test = function(position) {
+      return position.x > ship.points[0].x && position.x < ship.points[3].x &&
+              position.y > ship.points[0].y && position.y < ship.points[3].y;
+    }
+    return test;
+  }
+
+  
   window.SpaceRocks.Ship = Ship;
 
 })();

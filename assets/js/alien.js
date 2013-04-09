@@ -40,8 +40,7 @@
       var bbox = this.obj.getBBox();
       this.position.x = (bbox.x + bbox.width / 2) % Game.windowSize;
       this.position.y = (bbox.y + bbox.height / 2) % Game.windowSize;
-
-      console.log("ship center: "+ bbox.x + bbox.width / 2 +" , "+bbox.y + bbox.height / 2);  */
+      */
       
       this.updatePoints();
      
@@ -50,13 +49,21 @@
 
       this.position.x = wrap(this.position.x);
       this.position.y = wrap(this.position.y);
-            
-      //console.log('Ship position: (' + this.position.x + ', ' + this.position.y + ')');
-
+      
       this.obj.transform("t" + (this.position.x) + "," + (this.position.y));
 
     };
 
+  }
+  
+  AlienShip.collision = function(alien) {
+    if (alien) {
+      var test = function(position) {
+        return position.x > alien.points[0].x && position.x < alien.points[3].x &&
+                position.y > alien.points[0].y && position.y < alien.points[3].y;
+      }
+      return test;
+    }
   }
   
   window.SpaceRocks.AlienShip = AlienShip;
