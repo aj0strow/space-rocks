@@ -32,7 +32,7 @@
       },
       
       start: function() {
-        if (this.lives > 1) {
+        if (this.lives > 0) {
           this.score = 0;
           var Ship = window.SpaceRocks.Ship;
           var Asteroid = window.SpaceRocks.Asteroid;
@@ -127,6 +127,8 @@
                   bullet.position.y > this.ship.points[0].y &&
                   bullet.position.y < this.ship.points[3].y;
           if (collided) {
+            if(this.alienShip)
+              this.removeAlienShip;
             this.removeAlienBullet(bullet);
             return this.removeShip();
           }
@@ -163,6 +165,9 @@
             this.score += (asteroid.intSize + 1) * 50;
             this.removeBullet(bullet);
             this.removeAsteroid(asteroid);
+            if(this.alienShip)
+              this.removeAlienShip();
+
           } else if (this.alienShip) {
             if (alienCollision(bullet.position)) {
               this.removeBullet(bullet);
