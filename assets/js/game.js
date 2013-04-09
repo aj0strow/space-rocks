@@ -108,8 +108,6 @@
         this.totalScore += this.score;
         this.ship.obj.remove();
         this.level = 0;
-        this.lives--;
-        $('.life').last().remove(); // why doesnt this work?
         this.stop();
       },
       
@@ -122,6 +120,7 @@
         _.each(this.bullet, function(bullet){
           this.removeBullet(bullet);
         }, this);
+        this.lives--;
         $('.life').last().remove();
       },
       // Detect collisions
