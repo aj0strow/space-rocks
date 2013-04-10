@@ -66,11 +66,14 @@
 
     };
 
-    this.update = function() {
+    this.update = function(updateHBox) {
       //console.log("updataing ship");
       // this.updateAngle();
       this.updatePosition();
-      this.updatePoints();
+      if(updateHBox)
+        this.updatePoints();
+      //Updating points drastically impacts performance 
+      // this.updatePoints();
     };
 
   }

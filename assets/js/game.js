@@ -23,6 +23,7 @@
       bullets: [],
       alienBullets: [],
       alienShipExists: false,
+      shipTurn: true,
       
       init: function(canvasContainer) {
         var SoundSystem = window.SpaceRocks.SoundSystem;
@@ -280,6 +281,10 @@
       },
     
       enter: function() {
+        if (!this.alienShip){ 
+          var AlienShip = window.SpaceRocks.AlienShip;
+          this.alienShip = new AlienShip(this.paper, "alien");
+        }
       }
     };
     
@@ -291,7 +296,7 @@
       if (this.asteroids.length == 0) {
         this.levelUp();
       } else {
-        this.ship.update();
+        this.ship.update(this.shipTurn);
         _.invoke(this.asteroids, 'updatePosition');
         
         _.each(this.bullets, function(bullet) {
@@ -303,7 +308,7 @@
         }, this);
         
         if(this.alienShip){
-          this.alienShip.update();
+          this.alienShip.update(!this.shipTurn);
           if (Math.random() > 0.9){
             this.sounds.gun.play();
             var bullet = new Bullet(this.paper, this.alienShip, 0, this.ship); 
@@ -311,8 +316,13 @@
           }        
         }
         this.shipCollision();
-        this.alienBulletCollision();
-        this.bulletCollision();
+        if(!this.shipTurn)
+          this.alienBulletCollision();
+        else{
+          this.bulletCollision();
+          this.shipCollision();
+        }
+        this.shipTurn = (!this.shipTurn);
 
         $('#score').text(this.score);
       }
