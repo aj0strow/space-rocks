@@ -39,7 +39,6 @@
 
     //this is the asteroidRadius used in the collision detection
     //Ben, you should modify this to the game more playable
-    this.asteroidRadius = 15 * this.asteroidSize;
 
     var path = [
       "M20.402,17.626c0.84-0.772,2.468-0.381,5.979-1.853c1.716-0.72,1.572-1.265,1.566-1.928c-",
@@ -62,6 +61,7 @@
    
     var bbox = this.obj.getBBox();
     this.asteroidCenter = { x: bbox.x + (bbox.width / 2), y: bbox.y + (bbox.height / 2) };
+    this.asteroidRadius = bbox.width / 2;
   }
   
   Asteroid.prototype = {
