@@ -1,26 +1,25 @@
 (function() {
   
-  var keys = {};
+ var log = $('#log')[0],
+    pressedKeys = [];
 
-$(document).keydown(function (e) {
-    keys[e.which] = true;
-    
-    printKeys();
-});
-
-$(document).keyup(function (e) {
-    delete keys[e.which];
-    
-    printKeys();
-});
-
-function printKeys() {
-    var html = '';
-    for (var i in keys) {
-        if (!keys.hasOwnProperty(i)) continue;
-        html += '<p>' + i + '</p>';
+$(document.body).keydown(function (evt) {
+    var li = pressedKeys[evt.keyCode];
+    if (!li) {
+        li = log.appendChild(document.createElement('li'));
+        pressedKeys[evt.keyCode] = li;
     }
-    $('#out').html(html);
-}
+    $(li).text('Down: ' + evt.keyCode);
+    $(li).removeClass('key-up');
+});
+
+$(document.body).keyup(function (evt) {
+    var li = pressedKeys[evt.keyCode];
+    if (!li) {
+       li = log.appendChild(document.createElement('li'));
+    }
+    $(li).text('Up: ' + evt.keyCode);
+    $(li).addClass('key-up');
+});
 
 })();
