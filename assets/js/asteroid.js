@@ -6,7 +6,7 @@
   var sizes = [ 1, 3 , 6];
 
 	var Asteroid = function(paper, parent, dtheta) {
-		var distance = window.distance(Asteroid, Game.ship);
+		
 		
 	
 
@@ -15,28 +15,19 @@
      *We will have to make sure that the position doesn't fall within a radius of the ship. */
     if(parent == null){
 		//if distance between ship and asteroid is less than 300, asteroid will be generated at least 300 pixels away from 			the position of the ship 
-		if (distance < 300){
+		
       console.log("random asteroid");
 	  //randonly generates a position 400 pixels away from the ship's position
-      this.position = { x: Math.random() * (Game.windowSize-(Game.ship.position.X+400)), y: Math.random() * (Game.windowSize-(Game.ship.position.Y+400)) };
+      this.position = { x: Math.random() * (Game.windowSize-(Game.ship.position.x+400)), y: Math.random() * (Game.windowSize-(Game.ship.position.y+400)) };
       //randomly generate an angle which is < 360
       this.angle = Math.floor(Math.random() * 360);
       //randomly generate a pointer (between 0 and sizes.length [3])
       this.intSize = Math.floor(Math.random() * sizes.length);
       //the size the asteroid is scaled to is generated here
       this.asteroidSize = sizes[this.intSize];
-  		}
-		else{ 
-	  console.log("random asteroid");
-	  //otherwise, asteroids are generated at random position
-      this.position = { x: Math.random() * Game.windowSize, y: Math.random() * Game.windowSize};
-      //randomly generate an angle which is < 360
-      this.angle = Math.floor(Math.random() * 360);
-      //randomly generate a pointer (between 0 and sizes.length [3])
-      this.intSize = Math.floor(Math.random() * sizes.length);
-      //the size the asteroid is scaled to is generated here
-      this.asteroidSize = sizes[this.intSize]; 
-  		}	
+  		
+		
+	 
 	
       //the asteroid is actually scaled in the this.obj.transform statement further below
     }
