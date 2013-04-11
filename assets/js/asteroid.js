@@ -12,8 +12,8 @@
      *We will have to make sure that the position doesn't fall within a radius of the ship. */
     if(parent == null){
       console.log("random asteroid");
-      //randomly get a position
-      this.position = { x: Math.random() * Game.windowSize, y: Math.random() * Game.windowSize };
+      //randomly get a position 400 pixels away from the position of the ship
+      this.position = { x: Math.random() * (Game.windowSize-(Game.ship.position.x+400)), y: Math.random() * (Game.windowSize-(Game.ship.position.y+400)) };
       //randomly generate an angle which is < 360
       this.angle = Math.floor(Math.random() * 360);
       //randomly generate a pointer (between 0 and sizes.length [3])
