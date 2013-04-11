@@ -3,7 +3,7 @@
 	var wrap = wrapAround(Game.windowSize);
 
   //the sizes the asteroids will be scaled by. They are pointed to by this.intSize .
-  var sizes = [ 1, 3 , 6];
+  var sizes = [ 1, 2 , 3];
 
 	var Asteroid = function(paper, parent, dtheta) {
 
