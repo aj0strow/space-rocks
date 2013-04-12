@@ -6,23 +6,36 @@
   var sizes = [ 1, 3 , 6];
 
 	var Asteroid = function(paper, parent, dtheta) {
+		
+		
+	
 
     /*if no information is sent to make a new asteroid, this method randomly creates an asteroid which spawns at a random
      *postition with a randomly generated velocity and angle. 
      *We will have to make sure that the position doesn't fall within a radius of the ship. */
     if(parent == null){
+		//if distance between ship and asteroid is less than 300, asteroid will be generated at least 300 pixels away from 			the position of the ship 
+		
       console.log("random asteroid");
-      //randomly get a position
-      this.position = { x: Math.random() * Game.windowSize, y: Math.random() * Game.windowSize };
+	  //randonly generates a position 400 pixels away from the ship's position
+      this.position = { x: Math.random() * (Game.windowSize-(Game.ship.position.x+400)), y: Math.random() * (Game.windowSize-(Game.ship.position.y+400)) };
       //randomly generate an angle which is < 360
       this.angle = Math.floor(Math.random() * 360);
       //randomly generate a pointer (between 0 and sizes.length [3])
       this.intSize = Math.floor(Math.random() * sizes.length);
       //the size the asteroid is scaled to is generated here
       this.asteroidSize = sizes[this.intSize];
-
+  		
+		
+	 
+	
       //the asteroid is actually scaled in the this.obj.transform statement further below
     }
+
+	
+	
+	
+	
     /*This method is excecuted if a 'parent' asteroid (with .intSize > 1) is destroyed. It takes the same (x,y) position 
      *as its parent, but changes the angle by a passed value dthetha. It also changes how big the asteroid is*/
     else{
@@ -36,6 +49,21 @@
       //updates the size the asteroid is scaled to
       this.asteroidSize = sizes[this.intSize];
     }
+	
+	var distance = window.distance(Asteroid, Game.ship);
+	
+	while (distance<150){ 
+		console.log("random asteroid");
+	  //randonly generates a position 400 pixels away from the ship's position
+      this.position = { x: Math.random() * (Game.windowSize-(Game.ship.position.x+400)), y: Math.random() * (Game.windowSize-(Game.ship.position.y+400)) };
+      //randomly generate an angle which is < 360
+      this.angle = Math.floor(Math.random() * 360);
+      //randomly generate a pointer (between 0 and sizes.length [3])
+      this.intSize = Math.floor(Math.random() * sizes.length);
+      //the size the asteroid is scaled to is generated here
+      this.asteroidSize = sizes[this.intSize];
+  }
+	
 
     //this is the asteroidRadius used in the collision detection
     //Ben, you should modify this to the game more playable
