@@ -185,10 +185,9 @@ tr:last-child td:last-child {
       background: #CCCCCC;
       float: right;
       padding: 10px;
-      
     }
 
-    #sidebar-wrapper-two
+#sidebar-wrapper-two
     {
       width: 220px;
       height: 250px;
@@ -196,5 +195,4 @@ tr:last-child td:last-child {
       background: #CCCCCC;
       float: left;
       padding: 10px;
-      
     }
