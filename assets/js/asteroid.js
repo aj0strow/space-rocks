@@ -27,16 +27,9 @@
       this.asteroidSize = sizes[this.intSize];
   		
 
-      while (window.distance(this.position, Game.ship.position)<100){ 
-        console.log("random asteroid");
-        //randonly generates a position 400 pixels away from the ship's position
+      while (window.distance(this.position, Game.ship.position)<150){ 
+        //randonly generates a position
         this.position = { x: Math.random() * (Game.windowSize), y: Math.random() * (Game.windowSize) };
-        //randomly generate an angle which is < 360
-        this.angle = Math.floor(Math.random() * 360);
-        //randomly generate a pointer (between 0 and sizes.length [3])
-        this.intSize = Math.floor(Math.random() * sizes.length);
-        //the size the asteroid is scaled to is generated here
-        this.asteroidSize = sizes[this.intSize];
       }
 	 
 	
