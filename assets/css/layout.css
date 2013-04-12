@@ -176,3 +176,25 @@ tr:last-child td:last-child {
 #back:hover {
   background: #fff;
 }
+
+#sidebar-wrapper
+    {
+      width: 220px;
+      height: 250px;
+      border: 1px solid;
+      background: #CCCCCC;
+      float: right;
+      padding: 10px;
+      
+    }
+
+    #sidebar-wrapper-two
+    {
+      width: 220px;
+      height: 250px;
+      border: 1px solid;
+      background: #CCCCCC;
+      float: left;
+      padding: 10px;
+      
+    }
