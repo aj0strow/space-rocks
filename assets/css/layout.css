@@ -191,21 +191,19 @@ tr:last-child td:last-child {
 
 #sidebar-right, #sidebar-left {
 	width: 220px;
-    height: 250px;
+  height: 250px;
 	position: absolute;
 	top: 80px;
-    padding: 10px;
+  padding: 10px;
 }
 
-#sidebar-right
-    {
-      right: 0;
-    }
+#sidebar-right {
+  right: 0;
+}
 
-#sidebar-left
-    {
-	  left: 0;
-    }
+#sidebar-left {
+	left: 0;
+}
 
 .button {
 	border-radius: 5px;
@@ -225,4 +223,8 @@ tr:last-child td:last-child {
 h3 {
 	text-decoration: underline;
 	margin-bottom: 20px;
+}
+
+.controls li {
+  margin-bottom: 10px;
 }
