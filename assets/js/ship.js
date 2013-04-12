@@ -7,21 +7,27 @@
   
   var wrap = wrapAround(Game.windowSize);
   
-  var Ship = function(paper) {
-    this.obj = paper.path("M 15.834,29.084 15.834,16.166 2.917,16.166 29.083,2.917z");
+  var LENGTH = 13;
+  
+  var Ship = function(paper) {    
+    this.obj = paper.path( [ 'M ', 
+      LENGTH, ',', LENGTH, ' ', 
+      LENGTH, ',', LENGTH * 2, ' ',
+      LENGTH * 2, ',', 0, ' ',
+      0, ',', LENGTH, ' Z' 
+    ].join('') );
+      
     this.obj.attr({
       'stroke': '#3b4449',
       'stroke-width': 1,
-      'stroke-linejoin': 'sharp',
-      'transform': 't' + (Game.windowSize / 2) + ',' + (Game.windowSize / 2) + 'r' + (-45)
+      'stroke-linejoin': 'sharp'
     });
-    this.points = new Array(4);
-        
+            
     this.speed = 0;
-    this.position = { x: Game.windowSize / 2, y: Game.windowSize / 2, };
+    this.position = { x: Game.windowSize / 2, y: Game.windowSize / 2 };
     
     // the angle the ship points
-    this.angle = -45;
+    this.angle = 0;
     this.anglechange = 0;
     // the angle the ship moves
     // this.direction = -45;
@@ -31,64 +37,49 @@
     this.MAX_SPEED = 20;
     this.MOVE_DISTANCE = .5;
     
-    this.updatePoints = function() {
-      var bbox = this.obj.getBBox();
-      this.points[0] = { x: bbox.x, y: bbox.y };
-      this.points[1] = { x: bbox.x + bbox.width, y: bbox.y };
-      this.points[2] = { x: bbox.x, y: bbox.y + bbox.height };
-      this.points[3] = { x: bbox.x + bbox.width, y: bbox.y + bbox.height };
-    };
-    
-    this.updatePoints();
-    
     this.updateAngle = function() {
       this.obj.rotate(this.anglechange);
       this.angle = (this.angle + this.anglechange) % 360;
-      //console.log("angle is: " + (this.angle + 45));
-      this.anglechange=0;
+      this.anglechange = 0;
     };
     
     this.updatePosition = function() {
-      /*
-      var bbox = this.obj.getBBox();
-      this.position.x = (bbox.x + bbox.width / 2) % Game.windowSize;
-      this.position.y = (bbox.y + bbox.height / 2) % Game.windowSize;
-
-      console.log("ship center: "+ bbox.x + bbox.width / 2 +" , "+bbox.y + bbox.height / 2);  */
-
-      this.position.x += (Math.cos((this.angle - 45) * Math.PI / 180) * this.speed * this.MOVE_DISTANCE);
-      this.position.y += (Math.sin((this.angle - 45) * Math.PI / 180) * this.speed * this.MOVE_DISTANCE);
-
-      this.position.x = wrap(this.position.x);
-      this.position.y = wrap(this.position.y);
-            
-      //console.log('Ship position: (' + this.position.x + ', ' + this.position.y + ')');
-
-      this.obj.transform("t" + (this.position.x) + "," + (this.position.y) + "r" + this.angle);
+      var angle = toRadians(this.angle);
       
-      // Wrap around if it goes off left or right
-      //this.position.x = wrap(this.position.x);
-      //this.position.y = wrap(this.position.y);
+      var dx = Math.sin(angle) * this.speed * this.MOVE_DISTANCE,
+          dy = Math.cos(angle) * this.speed * this.MOVE_DISTANCE;
+          
+      this.position.x = wrap(this.position.x + dx);
+      this.position.y = wrap(this.position.y - dy);
+      this.obj.transform([ 't', this.position.x - LENGTH, ',', this.position.y - LENGTH, ' r', 
+              this.angle - 45 ].join(''));
     };
     
-    this.update = function(updateHBox) {
-      //console.log("updataing ship");
+    this.update = function() {
       this.updateAngle();
       this.updatePosition();
-      if(updateHBox)
-        this.updatePoints();
+    };
+    
+    this.radius = function(angle) {
+      if (angle < 30) {
+        return LENGTH * (1 + ((30 - angle) / 30) * (Math.sqrt(2) - 1));
+      } else if (angle < 120) {
+        return Math.abs(angle - 75) * (LENGTH / 70) + LENGTH / 2;
+      } else {
+        return Math.abs(180 - angle) * (LENGTH / 60);
+      }
+    };
+    
+    this.isCollided = function(point, radius) {
+      var angle = Math.abs(direction(this.position, point) - this.angle);
+      return distance(this.position, point) < this.radius(angle) + radius;
+    };
+    
+    this.nose = function() {
+      return translatePosition(this.position, this.angle, LENGTH);
     };
 
   }
-  
-  Ship.collision = function(ship) {
-    var test = function(position) {
-      return position.x > ship.points[0].x && position.x < ship.points[3].x &&
-              position.y > ship.points[0].y && position.y < ship.points[3].y;
-    }
-    return test;
-  }
-
   
   window.SpaceRocks.Ship = Ship;
 

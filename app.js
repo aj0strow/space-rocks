@@ -11,7 +11,6 @@ app.use(express.static(__dirname + '/assets'));
 // Choose jade templating
 app.set('view engine', 'jade');
 
-
 app.get('/', function(request, response) {
   response.render('layout');
 });
