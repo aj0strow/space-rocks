@@ -20,7 +20,23 @@
       'stroke-linejoin': 'sharp',
       'transform': [ 't', this.position.x, ',', this.position.y ].join('')
     });
+
+    while (window.distance(this.position, Game.ship.position)<150){ 
+        //randonly generates a position 400 pixels away from the ship's position
+        this.position = { x: Math.random() * (Game.windowSize), y: Math.random() * (Game.windowSize) };
+      }
+
+    this.points = new Array(4);
     
+    this.updatePoints = function() {
+      var bbox = this.obj.getBBox();
+      this.points[0] = { x: bbox.x, y: bbox.y };
+      this.points[1] = { x: bbox.x + bbox.width, y: bbox.y };
+      this.points[2] = { x: bbox.x, y: bbox.y + bbox.height };
+      this.points[3] = { x: bbox.x + bbox.width, y: bbox.y + bbox.height };
+    };
+    
+    this.updatePoints();
     this.shipType = type;
 
     this.angle = Math.floor(Math.random() * 360);

@@ -6,6 +6,9 @@
   var sizes = [ 1, 3, 6];
 
 	var Asteroid = function(paper, parent, dtheta) {
+		
+		
+	
 
     /*if no information is sent to make a new asteroid, this method randomly creates an asteroid which spawns at a random
      *postition with a randomly generated velocity and angle. 
@@ -17,7 +20,21 @@
       // choose a random size
       this.intSize = Math.floor(Math.random() * sizes.length);
       this.asteroidSize = sizes[this.intSize];
+  		
+
+      while (window.distance(this.position, Game.ship.position)<150){ 
+        //randonly generates a position
+        this.position = { x: Math.random() * (Game.windowSize), y: Math.random() * (Game.windowSize) };
+      }
+	 
+	
+      //the asteroid is actually scaled in the this.obj.transform statement further below
     }
+
+	
+	
+	
+	
     /*This method is excecuted if a 'parent' asteroid (with .intSize > 1) is destroyed. It takes the same (x,y) position 
      *as its parent, but changes the angle by a passed value dthetha. It also changes how big the asteroid is*/
     else{
@@ -33,6 +50,7 @@
       //updates the size the asteroid is scaled to
       this.asteroidSize = sizes[this.intSize];
     }
+	
 
     //this is the asteroidRadius used in the collision detection
     //Ben, you should modify this to the game more playable
