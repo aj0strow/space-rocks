@@ -289,10 +289,14 @@
     var update = function() {
       var Bullet = window.SpaceRocks.Bullet;
       
-      for(var i = 0; i < this.keysDown.length; i++){
-        // console.log("stuff");
-        Game[this.keysDown[i]]();
-      }
+
+      _.each(this.keysDown, function(method) {
+        Game[method]();
+      }, this);
+      // for(var i = 0; i < this.keysDown.length; i++){
+      //   // console.log("stuff");
+      //   Game[this.keysDown[i]]();
+      // }
       if (this.asteroids.length == 0) {
         this.levelUp();
       } else {
@@ -325,6 +329,7 @@
       if (this.isRunning) this.update();
     };
     
+    game.space = _.throttle(game.space, 5000 / FPS);
     game.update = _.throttle(_.bind(update, game), 1000 / FPS);
 
     return game;

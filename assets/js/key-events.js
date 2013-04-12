@@ -26,7 +26,11 @@
   
   $(document).keydown(function(evnt) {
     var method = METHODS[evnt.keyCode];
-    if (Game.isRunning && Game[method]) {
+    if(Game.isRunning && evnt.keyCode == 80){
+      Game[method]();
+    }
+
+    else if (Game.isRunning && Game[method]) {
       Game.keysDown.push(method);
       if(evnt.keyCode == 38)
         Game.sounds.engine.play();
