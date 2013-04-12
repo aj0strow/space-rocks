@@ -1,19 +1,21 @@
-    #sidebar-wrapper-two
-        Instructions
-      p
-        | Your mission, if you choose to accept it, is to defend your ship from the perils of space.
-        | Dodging and destroying impending Asteroids and evil Aliens will be your main goal.
-        | You are Earths last chance. Are You Ready?
-    
-
-	#sidebar-wrapper
-      h3 Controls
-      dl
-        dt Left and Right Arrows
-        dd Turn Spaceship
-        dt Up and Down Arrows
-        dd Acceleration and Deceleration
-        dt Space Bar
-        dd Fire Bullets
-        dt p
-        dd Pause Game
+#sidebar-left 
+  h3 Instructions
+  p
+  | Your mission, if you choose to accept it, is to defend your ship from the perils of space.
+  | Dodging and destroying impending Asteroids and evil Aliens will be your main goal.
+  | You are Earths last chance. Are You Ready?
+#sidebar-right
+  h3 Controls
+  ul
+    li 
+      .button &harr;
+      Turn Spaceship
+    li 
+      .button &#8597;
+      = "Accelerate Ship"
+    li 
+      .button.space Space
+      Fire bullets
+    li
+      .button p
+      Pause Game
