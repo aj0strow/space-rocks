@@ -26,15 +26,28 @@
   
   $(document).keydown(function(evnt) {
     var method = METHODS[evnt.keyCode];
-    if (Game.isRunning && Game[method]) {
+    if(Game.isRunning && evnt.keyCode == 80){
       Game[method]();
+    }
+
+    else if (Game.isRunning && Game[method]) {
+      Game.keysDown.push(method);
+      if(evnt.keyCode == 38)
+        Game.sounds.engine.play();
+      // console.log(Game[method]);
+      // Game[method]()
     }
     return false;
   });
 
   $(document).keyup(function(evnt) {
-    if(Game.isRunning && evnt.keyCode == 38){
-      Game.upUp();
+    var method = METHODS[evnt.keyCode];
+    if (Game.isRunning && Game[method]) {
+      Game.keysDown = _.without(Game.keysDown, method);
+      if(evnt.keyCode == 38)
+        Game.sounds.engine.pause();
+      // console.log(Game[method]);
+      // Game[method]()
     }
     return false;
   })

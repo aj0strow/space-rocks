@@ -26,6 +26,7 @@
       asteroids: [],
       bullets: [],
       alienBullets: [],
+      keysDown: [],
       shipTurn: true,
       
       init: function(canvasContainer) {
@@ -240,17 +241,17 @@
             this.ship.speed += Math.log(this.ship.ACCELERATION);
           }
           
-          if (this.sounds.engine.paused) {
-            this.sounds.engine.play();
-          }
+          // if (this.sounds.engine.paused) {
+          //   this.sounds.engine.play();
+          // }
             
         }
       },
     
-      upUp: function(){
-        if (!this.sounds.engine.paused)
-          this.sounds.engine.pause();
-      },
+      // upUp: function(){
+      //   if (!this.sounds.engine.paused)
+      //     this.sounds.engine.pause();
+      // },
 
       down: function() {
         if (this.isRunning) {
@@ -308,6 +309,14 @@
     var update = function() {
       var Bullet = window.SpaceRocks.Bullet;
       
+
+      _.each(this.keysDown, function(method) {
+        Game[method]();
+      }, this);
+      // for(var i = 0; i < this.keysDown.length; i++){
+      //   // console.log("stuff");
+      //   Game[this.keysDown[i]]();
+      // }
       if (this.asteroids.length == 0) {
         this.levelUp();
       } else {
@@ -349,6 +358,7 @@
       if (this.isRunning) this.update();
     };
     
+    game.space = _.throttle(game.space, 5000 / FPS);
     game.update = _.throttle(_.bind(update, game), 1000 / FPS);
 
     return game;
