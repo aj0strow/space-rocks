@@ -53,10 +53,6 @@
       
       loseLife: function() {
         this.removeAlienShip();
-        
-        _.each(this.bullet, function(bullet) { bullet.obj.remove(); });
-        this.bullets = [];
-        
         this.removeShip();
         
         this.totalScore += this.score;
@@ -68,11 +64,11 @@
       },
       
       start: function() {
+        var Ship = window.SpaceRocks.Ship;
+        var Asteroid = window.SpaceRocks.Asteroid;
+        
         if (this.lives > 0) {
           this.score = 0;
-          var Ship = window.SpaceRocks.Ship;
-          var Asteroid = window.SpaceRocks.Asteroid;
-          
           this.ship = new Ship(this.paper);
           
           for (var i=0; i < INITIAL_ASTEROID_COUNT; i++) {
@@ -146,6 +142,10 @@
         this.sounds.shipExplode.play();
         this.ship.obj.remove();
         this.ship = null;
+        _.each(this.bullets, function(bullet) { 
+          bullet.obj.remove(); 
+        });
+        this.bullets = [];
       },
 
       // Detect collisions
