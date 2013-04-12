@@ -32,15 +32,22 @@
     // the angle the ship moves
     // this.direction = -45;
 
-    this.ANGLE_DELTA_INCREMENT = 2.5;
+    this.ANGLE_DELTA_INCREMENT = 5;
     this.ACCELERATION = 2;
     this.MAX_SPEED = 20;
     this.MOVE_DISTANCE = .5;
     
     this.updateAngle = function() {
-      this.obj.rotate(this.anglechange);
-      this.angle = (this.angle + this.anglechange) % 360;
-      this.anglechange = 0;
+      if(this.anglechange < 0){
+        this.obj.rotate(-this.ANGLE_DELTA_INCREMENT);
+        this.angle = (this.angle - this.ANGLE_DELTA_INCREMENT) % 360;
+        this.anglechange = 0;
+      }
+      else if(this.anglechange > 0){
+        this.obj.rotate(this.ANGLE_DELTA_INCREMENT);
+        this.angle = (this.angle + this.ANGLE_DELTA_INCREMENT) % 360;
+        this.anglechange = 0;
+      }
     };
     
     this.updatePosition = function() {
