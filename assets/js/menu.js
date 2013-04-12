@@ -10,7 +10,7 @@ $(function() {
   
   $('#two-player-game').click(function() {
     console.log('Two Player');
-    console.log('This is a stub. Replace the logic eventually in assets/js/ui-handlers/js');
+    Game.restart(true);
   });
   
   $('#high-scores').click(function() {

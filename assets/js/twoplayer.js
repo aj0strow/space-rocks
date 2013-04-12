@@ -8,18 +8,16 @@
   
   var Game = (function() {
     
-    var LIFE = '<span class="life"></span>';
+    var LIFE = 2 * '<span class="life"></span>';
     var SCORE_TEMPLATE = "<tr><td><%= name %></td><td><%= score %></td></tr>";
     var WINDOW_SIZE = 500;
     var INITIAL_ASTEROID_COUNT = 1;
     var COLLISION_ANGLE = 45;
     var INITIAL_LIVES = 3;
     var FPS = 30;
-
     var game = {
-      score: -1,
-      totalScore: [0 , 0],
-
+      score: { 0 : -1, 1 : -1},
+      totalScore: 0,
       // flag used to know when to stop the game loop
       isRunning: false,
       windowSize: WINDOW_SIZE,
@@ -31,7 +29,7 @@
       
       init: function(canvasContainer) {
         var SoundSystem = window.SpaceRocks.SoundSystem;
-        
+        console.log(score);
         this.paper = new Raphael(canvasContainer, this.windowSize, this.windowSize);
         this.sounds = new SoundSystem({ voiceMode: false });
       },
@@ -50,13 +48,8 @@
       loseLife: function() {
         this.removeAlienShip();
         this.removeShip();
-
-        if(this.twoPlayer){
-          this.totalScore[this.lives % 2] += this.score;
-        }
-        else this.totalScore[0] += this.score;
-
-        console.log("totalscore: " + this.totalScore);
+        
+        this.totalScore += this.score;
         this.level = 0;
         this.lives--;
         $('.life').last().remove();
@@ -83,43 +76,16 @@
 
       loseGame: function() {
         this.endGame();
-        if(! this.twoPlayer){
-          var name = prompt("Please enter a 3 digit name:", "...");
-          var data = {
-            name: (name + '...').substr(0, 3).toUpperCase(),
-            score: this.totalScore[0]
-          };
-          $.post('/scores', data, function(response) {
-            $('tbody').html(_.map(response, _.template(SCORE_TEMPLATE)).join(''));
-          });
-          this.totalScore = [0, 0];
-          this.pause();
-        }
-        else{
-          //logs player1's score
-          var name = prompt("Player 1, please enter a 3 digit name:", "...");
-          var data = {
-            name: (name + '...').substr(0, 3).toUpperCase(),
-            score: this.totalScore[0]
-          };
-          $.post('/scores', data, function(response) {
-            $('tbody').html(_.map(response, _.template(SCORE_TEMPLATE)).join(''));
-          });
-          this.totalScore[0] = 0;
-
-          //logs player2's score
-          var name = prompt("Player 2, please enter a 3 digit name:", "...");
-          var data = {
-            name: (name + '...').substr(0, 3).toUpperCase(),
-            score: this.totalScore[1]
-          };
-          $.post('/scores', data, function(response) {
-            $('tbody').html(_.map(response, _.template(SCORE_TEMPLATE)).join(''));
-          });
-
-          this.totalScore[1] = 0;
-          this.pause();
-        }
+        var name = prompt("Please enter a 3 digit name:", "...");
+        var data = {
+          name: (name + '...').substr(0, 3).toUpperCase(),
+          score: this.totalScore
+        };
+        $.post('/scores', data, function(response) {
+          $('tbody').html(_.map(response, _.template(SCORE_TEMPLATE)).join(''));
+        });
+        this.totalScore = 0;
+        this.pause();
       },
 
       levelUp: function(){
@@ -249,27 +215,14 @@
         this.update();
       },
 
-      restart: function(twoPlayer) {
-        this.twoPlayer = twoPlayer;
-
-        if(this.twoPlayer){
-          this.endGame();
-          this.totalScore = [0 , 0];
-          this.score = 0;
-          this.lives = 2 * INITIAL_LIVES;
-          this.level = 0;
-          $('#lives').html(LIFE + LIFE + LIFE + LIFE + LIFE + LIFE);
-          this.start();
-        }
-        else{
-          this.endGame();
-          this.totalScore = [0 , 0];
-          this.score = 0;
-          this.lives = INITIAL_LIVES;
-          this.level = 0;
-          $('#lives').html(LIFE + LIFE + LIFE);
-          this.start();
-        }
+      restart: function() {
+        this.endGame();
+        this.totalScore = 0;
+        this.score = 0;
+        this.lives = INITIAL_LIVES;
+        this.level = 0;
+        $('#lives').html(LIFE + LIFE + LIFE);
+        this.start();
       },
       
       // Key Listening Handlers
@@ -411,6 +364,6 @@
     return game;
   })();
 
-  window.SpaceRocks.Game = Game;
+  window.SpaceRocks.TwoPlayerGame = Game;
   
 })();
