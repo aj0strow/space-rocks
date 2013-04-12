@@ -223,7 +223,6 @@
       up: function() {
         // increases speed if running
         if (this.isRunning){
-          console.log("Up");
           //makes the ship start to move
           if (this.ship.speed == 0) {
             this.ship.speed = 1;
@@ -233,17 +232,17 @@
             this.ship.speed += Math.log(this.ship.ACCELERATION);
           }
           
-          if (this.sounds.engine.paused) {
-            this.sounds.engine.play();
-          }
+          // if (this.sounds.engine.paused) {
+          //   this.sounds.engine.play();
+          // }
             
         }
       },
     
-      upUp: function(){
-        if (!this.sounds.engine.paused)
-          this.sounds.engine.pause();
-      },
+      // upUp: function(){
+      //   if (!this.sounds.engine.paused)
+      //     this.sounds.engine.pause();
+      // },
 
       down: function() {
         if (this.isRunning) {

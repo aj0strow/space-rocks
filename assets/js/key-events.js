@@ -28,6 +28,8 @@
     var method = METHODS[evnt.keyCode];
     if (Game.isRunning && Game[method]) {
       Game.keysDown.push(method);
+      if(evnt.keyCode == 38)
+        Game.sounds.engine.play();
       // console.log(Game[method]);
       // Game[method]()
     }
@@ -38,6 +40,8 @@
     var method = METHODS[evnt.keyCode];
     if (Game.isRunning && Game[method]) {
       Game.keysDown = _.without(Game.keysDown, method);
+      if(evnt.keyCode == 38)
+        Game.sounds.engine.pause();
       // console.log(Game[method]);
       // Game[method]()
     }
