@@ -9,7 +9,7 @@
   
   var Ship = function(paper) {
     this.obj = paper.path("M 15.834,29.084 15.834,16.166 2.917,16.166 29.083,2.917z");
-    this.obj.attr({
+    this.obj.attr({ fill: "0-#fff-#f00:20-#000",
       'stroke': '#3b4449',
       'stroke-width': 1,
 	
