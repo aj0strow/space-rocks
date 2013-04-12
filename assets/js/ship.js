@@ -12,6 +12,7 @@
     this.obj.attr({
       'stroke': '#3b4449',
       'stroke-width': 1,
+		'fill' : '0-#fff-#f00:20-#000'
       'stroke-linejoin': 'sharp',
       'transform': 't' + (Game.windowSize / 2) + ',' + (Game.windowSize / 2) + 'r' + (-45)
     });
