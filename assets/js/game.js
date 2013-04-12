@@ -9,6 +9,7 @@
   var Game = (function() {
     
     var LIFE = '<span class="life"></span>';
+    var SCORE_TEMPLATE = "<tr><td><%= name %></td><td><%= score %></td></tr>";
     var WINDOW_SIZE = 500;
     var INITIAL_ASTEROID_COUNT = 1;
     var COLLISION_ANGLE = 45;
@@ -16,9 +17,6 @@
     var FPS = 30;
 
     var game = {
-      lives: INITIAL_LIVES,
-      level: 0,
-
       score: -1,
       totalScore: 0,
 
@@ -46,10 +44,6 @@
         this.alienBullets = [];
         this.ship = null;
         this.alienShip = null;
-        
-        this.score = 0;
-        console.log("Total score: " + this.totalScore);
-        this.totalScore = 0;
       },
       
       loseLife: function() {
@@ -82,8 +76,17 @@
       },
 
       loseGame: function() {
-        console.log("you've lost");
-        console.log("your score is: " + this.totalScore);
+        this.endGame();
+        var name = prompt("Please enter a 3 digit name:", "...");
+        var data = {
+          name: (name + '...').substr(0, 3).toUpperCase(),
+          score: this.totalScore
+        };
+        $.post('/scores', data, function(response) {
+          $('tbody').html(_.map(response, _.template(SCORE_TEMPLATE)).join(''));
+        });
+        this.totalScore = 0;
+        this.pause();
       },
 
       levelUp: function(){
@@ -215,6 +218,10 @@
 
       restart: function() {
         this.endGame();
+        this.totalScore = 0;
+        this.score = 0;
+        this.lives = INITIAL_LIVES;
+        this.level = 0;
         $('#lives').html(LIFE + LIFE + LIFE);
         this.start();
       },
@@ -287,7 +294,13 @@
           var AlienShip = window.SpaceRocks.AlienShip;
           this.alienShip = new AlienShip(this.paper, "alien");
         }
+      },
+      
+      refreshScores: function() {
+        
       }
+      
+      
     };
     
     // This is the game loop
