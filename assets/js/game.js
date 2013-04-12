@@ -23,6 +23,7 @@
       bullets: [],
       alienBullets: [],
       alienShipExists: false,
+      keysDown: [],
       
       init: function(canvasContainer) {
         var SoundSystem = window.SpaceRocks.SoundSystem;
@@ -222,6 +223,7 @@
       up: function() {
         // increases speed if running
         if (this.isRunning){
+          console.log("Up");
           //makes the ship start to move
           if (this.ship.speed == 0) {
             this.ship.speed = 1;
@@ -288,6 +290,10 @@
     var update = function() {
       var Bullet = window.SpaceRocks.Bullet;
       
+      for(var i = 0; i < this.keysDown.length; i++){
+        // console.log("stuff");
+        Game[this.keysDown[i]]();
+      }
       if (this.asteroids.length == 0) {
         this.levelUp();
       } else {

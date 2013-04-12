@@ -27,14 +27,19 @@
   $(document).keydown(function(evnt) {
     var method = METHODS[evnt.keyCode];
     if (Game.isRunning && Game[method]) {
-      Game[method]();
+      Game.keysDown.push(method);
+      // console.log(Game[method]);
+      // Game[method]()
     }
     return false;
   });
 
   $(document).keyup(function(evnt) {
-    if(Game.isRunning && evnt.keyCode == 38){
-      Game.upUp();
+    var method = METHODS[evnt.keyCode];
+    if (Game.isRunning && Game[method]) {
+      Game.keysDown = _.without(Game.keysDown, method);
+      // console.log(Game[method]);
+      // Game[method]()
     }
     return false;
   })
