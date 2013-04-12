@@ -6,10 +6,8 @@
         th Player
         th Score
     tbody
-      tr
-        td AMA
-        td 1425
-      tr
-        td MLQ
-        td 1388
+      each highScore in highScores
+        tr
+          td= highScore.name
+          td= highScore.score
   #back Back

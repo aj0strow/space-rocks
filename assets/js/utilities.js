@@ -38,6 +38,24 @@
     return Math.sqrt(dx * dx + dy * dy);
   }
   
+  /*
+   * The direction from one point to another. For example:
+   *
+   * direction (2,2), (2,1) = 0 deg
+   * direction (2,2), (3,2) = 90 deg
+  */
+  window.direction = function(p1, p2) {
+    return 180 - toDegrees( Math.atan2(p2.x - p1.x, p2.y - p1.y) );
+  }
+  
+  window.translatePosition = function(point, angle, distance) {
+    var ang = toRadians(angle);
+    return {
+      x: point.x + distance * Math.sin(ang),
+      y: point.y - distance * Math.cos(ang)
+    };
+  }
+  
   // Array Remove - By John Resig (MIT Licensed)
   
   Array.prototype.remove = function(from, to) {

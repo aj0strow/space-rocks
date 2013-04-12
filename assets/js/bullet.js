@@ -1,44 +1,11 @@
 (function() {
-  
-  var Game = window.SpaceRocks.Game;
-  var Ship = window.SpaceRocks.Game.ship;
-  var wrap = wrapAround(Game.windowSize);
+  var wrap = wrapAround(window.SpaceRocks.Game.windowSize);
 
-  // bonus angle is for when we have -- BEN: when we have what??
-  var Bullet = function(paper, ship, bonusAngle, playerShip) {  
-    
-    if (ship.shipType == "smartAlien") {
-      console.log(Ship);
-      var dx = ship.position.x - playerShip.position.x,
-          dy = ship.position.y - playerShip.position.y;
-      console.log(dx + " , " + dy);
-      this.angle = Math. atan(dx / dy);
-    } else if(ship.shipType == "alien") {
-      this.angle = Math.floor(Math.random() * 360);
-    } else {
-      this.angle = ship.angle + 45;
-    }
-      
-    // gets the bounding box
-    var bbox = ship.obj.getBBox();
-
-    // updating position of bullet
-    this.position = { 
-      x: bbox.x + bbox.width / 2, 
-      y: bbox.y + bbox.height / 2 
-    };
-
-    // shipPosition is a constant correction factor:
-    // when the bullet is made, poisition is affected by a margin of error
-    this.shipPosition = { 
-      x: bbox.x + bbox.width / 2, 
-      y: bbox.y + bbox.height / 2
-    };
-    
-  	this.obj = paper.path( ['M', this.position.x, ' ', this.position.y, 'l', 0, ' ', 10].join('') );
-  	this.obj.rotate( this.angle );
-    
+  var Bullet = function(paper, position, angle) {  
+    this.position = position;
+    this.angle = angle;
     this.distanceTraveled = 0;
+  	this.obj = paper.path('M 0,5 L0,0');  	
   }
   
   Bullet.prototype = {
@@ -47,24 +14,21 @@
     MAX_DISTANCE: 480,
     
     updatePosition: function() {
-      if (this.distanceTraveled < this.MAX_DISTANCE) {
-        var angle = toRadians(this.angle);
-        var dx = Math.sin(angle) * this.SPEED;
-        var dy = Math.cos(angle + Math.PI) * this.SPEED;
+      var angle = toRadians(this.angle);
+      var dx = Math.sin(angle) * this.SPEED;
+      var dy = Math.cos(angle + Math.PI) * this.SPEED;
         
-        this.position.x = wrap( this.position.x + dx );
-        this.position.y = wrap( this.position.y + dy );
+      this.position.x = wrap( this.position.x + dx );
+      this.position.y = wrap( this.position.y + dy );
         
-        this.obj.transform( ['t', this.position.x - this.shipPosition.x, ',', 
-                this.position.y - this.shipPosition.y, 'r', this.angle].join('') );
-        this.distanceTraveled += this.SPEED;
-        return false;
-      } else {
-        return true;
-      }
+      this.obj.transform(['t', this.position.x, ',', this.position.y, 'r', this.angle].join(''));
+      this.distanceTraveled += this.SPEED;
+    },
+    
+    isExpired: function() {
+      return this.distanceTraveled > this.MAX_DISTANCE;
     }
   }
 	
   window.SpaceRocks.Bullet = Bullet;
-
 })();
