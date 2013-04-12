@@ -280,10 +280,11 @@
       
       space: function(){
         var Bullet = window.SpaceRocks.Bullet;
-        
-        this.sounds.gun.play();
-        var offset = 
-        this.bullets.push( new Bullet(this.paper, this.ship.nose(), this.ship.angle) );
+        if(this.bullets.length < 10) {
+          this.sounds.gun.play();
+          var offset = 
+          this.bullets.push( new Bullet(this.paper, this.ship.nose(), this.ship.angle) );
+        }
       },
 
       shift: function() {
@@ -322,6 +323,7 @@
       } else {
 
         this.ship.update();
+
         _.each([ this.asteroids, this.bullets, this.alienBullets ], function(objs) {
           _.invoke(objs, 'updatePosition');
         });        
