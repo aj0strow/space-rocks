@@ -32,7 +32,7 @@
     // the angle the ship moves
     // this.direction = -45;
 
-    this.ANGLE_DELTA_INCREMENT = 5;
+    this.ANGLE_DELTA_INCREMENT = 2.5;
     this.ACCELERATION = 2;
     this.MAX_SPEED = 20;
     this.MOVE_DISTANCE = .5;
