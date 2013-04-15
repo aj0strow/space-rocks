@@ -28,3 +28,5 @@ $ node app.js
 
 Then view the file on localhost - http://0.0.0.0:5000/    (Mac)
                                   http://127.0.0.1:5000/  (Windows)
+
+You can also run the game at http://space-rocks.herokuapp.com/
